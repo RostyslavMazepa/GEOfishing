@@ -1,0 +1,123 @@
+<!--/.row-->
+<div class="row">
+  <div class="col-lg-6"> <!--.col-->
+    <div class="card">
+      <!-- http://plnkr.co/edit/YX7W20?p=preview -->
+      <div class="card-header">
+        <strong>Google Map</strong>
+      </div>
+      <div class="card-body">
+        <agm-map
+                [latitude]="lat"
+                [longitude]="lng"
+                [zoom]="zoom"
+                (mapClick)="mapClicked($event)">
+          <agm-marker
+                  *ngFor="let marker of markers; let i = index"
+                  (markerClick)="clickedMarker(marker.label, i)"
+                  [latitude]="marker.lat"
+                  [longitude]="marker.lng"
+                  [label]="marker.label"
+                  [markerDraggable]="marker.draggable"
+                  (dragEnd)="markerDragEnd(marker, $event)">
+          </agm-marker>
+        </agm-map>
+      </div>
+    </div>
+  </div> <!--/.col-->
+
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <strong>Fishing Place Form</strong>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="fishingPlaceForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishingNameFormControlInput">Name Place</label>
+            <div class="col-md-9">
+              <input type="text" id="fishingNameFormControlInput" name="fishingNameFormControlInput" class="form-control" placeholder="Name Place">
+              <label *ngIf="fishingPlaceForm.get('fishingNameFormControlInput').invalid && processValidation"
+                     [ngClass] = "'error'"> Title is required. </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishingLongitudeFormControlInput">Longitude</label>
+            <div class="col-md-9">
+              <input formControlName="fishingLongitudeFormControlInput" type="text" id="fishingLongitudeFormControlInput" name="fishingLongitudeFormControlInput" class="form-control" placeholder="Longitude">
+              <label *ngIf="fishingPlaceForm.get('fishingLongitudeFormControlInput').invalid && processValidation"
+                     [ngClass] = "'error'"> Title is required. </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishingLatitudeFormControlInput">Latitude</label>
+            <div class="col-md-9">
+              <input formControlName="fishingLatitudeFormControlInput" type="text" id="fishingLatitudeFormControlInput" name="fishingLatitudeFormControlInput" class="form-control" placeholder="Latitude">
+              <label *ngIf="fishingPlaceForm.get('fishingLatitudeFormControlInput').invalid && processValidation"
+                     [ngClass] = "'error'"> Title is required. </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishingCommentsFormControlTextarea">Comments</label>
+            <div class="col-md-9">
+              <textarea id="fishingCommentsFormControlTextarea" name="fishingCommentsFormControlTextarea" rows="9" class="form-control" placeholder="Content.."></textarea>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="card-footer">
+        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <strong>Fishing Form</strong>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="fishingForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishKindFormControlSelect">Fish kind</label>
+            <div class="col-md-9">
+              <select (change) = "getAllFishTypeByKindId();" id="fishKindFormControlSelect" formControlName="fishKindFormControlSelect" class="form-control">
+                <option value="0">Please select</option>
+                <option *ngFor="let dicFishKind of allFishKinds"
+                        value="{{dicFishKind.fishKindId}}">{{dicFishKind.fishKindName}}
+                </option>
+              </select>
+            </div>
+            <label *ngIf="fishingForm.get('fishKindFormControlSelect').invalid && processValidation"
+                   [ngClass] = "'error'"> Title is required. </label>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="fishTypeFormControlSelect">Fish type</label>
+            <div class="col-md-9">
+              <select id="fishTypeFormControlSelect" formControlName="fishTypeFormControlSelect" class="form-control">
+                <option value="0">Please select</option>
+                <option *ngFor="let dicFishType of allFishTypes"
+                        value="{{dicFishType.fishTypeId}}">{{dicFishType.fishTypeName}}
+                </option>
+              </select>
+            </div>
+            <label *ngIf="fishingForm.get('fishTypeFormControlSelect').invalid && processValidation"
+                   [ngClass] = "'error'"> Title is required. </label>
+          </div>
+
+        </form>
+      </div>
+      <div class="card-footer">
+        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+      </div>
+    </div>
+  </div> <!--/.col-->
+</div>
+<!--/.row-->
