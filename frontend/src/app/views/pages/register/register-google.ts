@@ -3,8 +3,28 @@
 declare const gapi: any;
 
 export class Google {
+
     private appId: string;
     private elementId: string;
+
+    private socialNetworking: string = 'google';
+    private userName: string;
+    private userEmail: string;
+    private userToken: string;
+    private userId: string;
+    private userImageURL: string;
+    private expiresIn: string;
+    private signedRequest: string;
+
+    getUserName(): string {
+        return this.userName;
+    }
+
+    getUserEmail(): string {
+        return this.userEmail;
+    }
+
+    private auth2: any;
 
     private scope = [
         'profile',
@@ -13,8 +33,6 @@ export class Google {
         'https://www.googleapis.com/auth/contacts.readonly',
         'https://www.googleapis.com/auth/admin.directory.user.readonly'
     ].join(' ');
-
-    public auth2: any;
 
     constructor(appId: string, elementId: string) {
         this.appId = appId;
@@ -43,7 +61,6 @@ export class Google {
         js.src = '//apis.google.com/js/platform.js?onload=init';
 
         ref.parentNode.insertBefore(js, ref);
-        // console.log(ref.parentNode.insertBefore(js, ref));
         js.onload = results => {
             this.initSDK()
         }
@@ -53,10 +70,7 @@ export class Google {
         gapi.load('auth2', () => {
             this.auth2 = gapi.auth2.init({
                 client_id: this.appId,
-                // client_secret: 'XD2DUg0b1hnvohJPo2UYiKOW',
-                // redirect_url: 'http://localhost:4200/#/pages/register',
-                // discoveryDocs: ['https://people.googleapis.com/$discovery/rest?version=v1'],
-                cookiepolicy: 'single_host_origin', // 'http://localhost:4200/#/pages/register',
+                cookiepolicy: 'single_host_origin',
                 scope: this.scope
             });
             // this.attachSignin(this.element.nativeElement.firstChild);
@@ -69,10 +83,15 @@ export class Google {
             (googleUser) => {
                 const profile = googleUser.getBasicProfile();
                 console.log('Token || ' + googleUser.getAuthResponse().id_token);
+                this.userToken = googleUser.getAuthResponse().id_token;
                 console.log('ID: ' + profile.getId());
+                this.userId = profile.getId();
                 console.log('Name: ' + profile.getName());
+                this.userName = profile.getName();
                 console.log('Image URL: ' + profile.getImageUrl());
+                this.userImageURL = profile.getImageUrl();
                 console.log('Email: ' + profile.getEmail());
+                this.userEmail = profile.getEmail();
             },
             (error) => {
                 console.log(JSON.stringify(error, undefined, 2));
