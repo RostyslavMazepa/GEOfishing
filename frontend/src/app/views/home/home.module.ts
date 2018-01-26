@@ -10,12 +10,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     HomeRoutingModule,
-      FormsModule,
-      ReactiveFormsModule,
-      AgmCoreModule.forRoot({
-          apiKey: 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do'
-      })
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do'
+    })
   ],
   declarations: [ HomeComponent ]
 })
