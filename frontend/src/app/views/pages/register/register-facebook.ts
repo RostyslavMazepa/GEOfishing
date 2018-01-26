@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SocialNetworkInfo } from "./SocialNetworkInfo";
 
 declare const FB: any;
 
@@ -9,14 +10,7 @@ export class Facebook {
     public response = new BehaviorSubject<boolean>(false);
     public data = this.response.asObservable();
 
-    private socialNetworking: string = 'facebook';
-    private userName: string;
-    private userEmail: string;
-    private userToken: string;
-    private userId: string;
-    private userImageURL: string;
-    private expiresIn: string;
-    private signedRequest: string;
+    private socialNetworkInfo: SocialNetworkInfo[];
 
 
     constructor(appId: string) {
@@ -28,21 +22,37 @@ export class Facebook {
     login() {
         FB.getLoginStatus(response => {
             if (response.status === 'connected'){
-                this.userId = response.authResponse.userID;
-                this.userToken = response.authResponse.accessToken;
-                this.expiresIn = response.authResponse.expiresIn;
-                this.signedRequest = response.authResponse.signedRequest;
+                let userId = response.authResponse.userID;
+                let userToken = response.authResponse.accessToken;
+                let expiresIn = response.authResponse.expiresIn;
+                let signedRequest = response.authResponse.signedRequest;
 
-                console.log('userId - ' + this.userId);
-                console.log('accessToken - ' + this.userToken);
-                console.log('expiresIn - ' + this.expiresIn);
-                console.log('signedRequest - ' + this.signedRequest);
-                //this.logout()
+                new Promise((resolve, reject) => {
+                    let fields = [
+                        'id', 'name', 'email', 'picture'//, 'cover', 'birthday'
+                    ];
+                    FB.api(`/me?fields=${fields.toString()}`, (response: any) => {
+                        resolve(response);
+                        this.socialNetworkInfo = [{
+                            socialNetworking: 'facebook',
+                            userName: response.name,
+                            userEmail: response.email||'',
+                            userToken: userToken,
+                            userId: userId,
+                            userImageURL: response.picture.data.url,
+                            expiresIn: expiresIn,
+                            signedRequest: signedRequest
+                        }];
+                        //console.log(response)
+                        //console.log(this.socialNetworkInfo)
+                    });
+                });
             } else if (response.status === 'not_authorized'){
                 FB.login()
             } else if (response.status === 'unknown'){
                 FB.logout()
             }
+            console.log(response.status)
         });
         // FB.login()
     }
@@ -71,8 +81,11 @@ export class Facebook {
     initSDK() {
         FB.init({
             appId: this.appId,
+            status: true,
+            cookie: true,
             xfbml: true,
-            version: 'v2.11'
+            version: 'v2.4',
+            scope: 'publish_actions'
         });
         this.setCallback()
     }
