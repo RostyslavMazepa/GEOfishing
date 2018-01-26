@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { appIdGoogle, elementIdGoogle, msTimeoutGoogle, appIdFacebook } from "../../../../environments/environment";
 import { Facebook } from './register-facebook';
 import { Google } from './register-google';
 
@@ -24,9 +25,10 @@ export class RegisterComponent {
   });
 
   constructor() {
-      this.facebook = new Facebook('149318269057115');
-      this.google = new Google('834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com', 'googleBtn');
+      this.facebook = new Facebook(appIdFacebook);
+      this.google = new Google(appIdGoogle, elementIdGoogle);
   }
+
 
   loginFacebook() {
     this.facebook.login();
@@ -38,7 +40,7 @@ export class RegisterComponent {
           (resolve, reject) => {
               setTimeout(() => {
                   resolve('result')
-              }, 1000);
+              }, msTimeoutGoogle);
           })
       promise.then(
               result => {
