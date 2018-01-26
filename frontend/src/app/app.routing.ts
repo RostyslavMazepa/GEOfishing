@@ -25,12 +25,12 @@ export const routes: Routes = [
     component: FullLayoutComponent,
     data: {
       title: 'Home'
-    },
+   },
     children: [
-        {
-            path: 'home',
-            loadChildren: './views/home/home.module#HomeModule'
-        },
+      {
+        path: 'home',
+        loadChildren: './views/home/home.module#HomeModule'
+      },
       {
         path: 'dashboard',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'

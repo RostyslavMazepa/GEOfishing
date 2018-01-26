@@ -5,26 +5,35 @@
         <div class="card mx-4">
           <div class="card-body p-4">
             <form [formGroup]="registerForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-              <h1>Register</h1>
-              <p class="text-muted">Create your account</p>
+
+              <div class="row mb-3">
+                <div class="col-8">
+                  <h1>Register</h1>
+                  <p class="text-muted">Create your account</p>
+                </div>
+                <div class="col-4">
+                  <img src="{{userImageURL}}" class="img-avatar" alt=""/>
+                </div>
+              </div>
+
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="icon-user"></i></span>
-                <input type="text" class="form-control" id="userNameInput" placeholder="Username">
+                <input type="text" class="form-control" formControlName="userNameInput" placeholder="Username">
               </div>
 
               <div class="input-group mb-3">
                 <span class="input-group-addon">@</span>
-                <input type="text" class="form-control" id="userEmailInput" placeholder="Email">
+                <input type="text" class="form-control" formControlName="userEmailInput" placeholder="Email">
               </div>
 
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="icon-lock"></i></span>
-                <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                <input type="password" class="form-control" formControlName="passwordInput" placeholder="Password">
               </div>
 
               <div class="input-group mb-4">
                 <span class="input-group-addon"><i class="icon-lock"></i></span>
-                <input type="password" class="form-control" id="repeatPasswordInput" placeholder="Repeat password">
+                <input type="password" class="form-control" formControlName="repeatPasswordInput" placeholder="Repeat password">
               </div>
 
               <button type="button" class="btn btn-block btn-success">Create Account</button>

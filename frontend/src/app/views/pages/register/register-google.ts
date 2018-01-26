@@ -1,4 +1,6 @@
 // '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com'
+import { SocialNetworkInfo } from "./SocialNetworkInfo";
+import {reject} from "q";
 
 declare const gapi: any;
 
@@ -6,23 +8,9 @@ export class Google {
 
     private appId: string;
     private elementId: string;
+    private profile: any;
 
-    private socialNetworking: string = 'google';
-    private userName: string;
-    private userEmail: string;
-    private userToken: string;
-    private userId: string;
-    private userImageURL: string;
-    private expiresIn: string;
-    private signedRequest: string;
-
-    getUserName(): string {
-        return this.userName;
-    }
-
-    getUserEmail(): string {
-        return this.userEmail;
-    }
+    private socialNetworkInfo: SocialNetworkInfo[];
 
     private auth2: any;
 
@@ -39,11 +27,18 @@ export class Google {
         this.elementId = elementId;
 
         this.init();
+        //console.log(this.socialNetworkInfo)
     }
 
     login() {
-        // gapi.login()
+        //this.initSDK(
+        //this.getSocialNetworkInfo()
+        //this.socialNetworkInfo
+            //.then(result => console.log(result))
+            //.catch(error => console.log(error));
+
     }
+
 
     init() {
         let js;
@@ -64,38 +59,46 @@ export class Google {
         js.onload = results => {
             this.initSDK()
         }
+        //console.log('init - 1');
     }
 
     initSDK() {
-        gapi.load('auth2', () => {
+        gapi.load(
+            'auth2',
+            () => {
             this.auth2 = gapi.auth2.init({
                 client_id: this.appId,
                 cookiepolicy: 'single_host_origin',
                 scope: this.scope
             });
-            // this.attachSignin(this.element.nativeElement.firstChild);
-            this.setCallback(document.getElementById(this.elementId))
-        });
+            this.setCallback();
+            }
+        );
     }
 
-    setCallback(element) {
-        this.auth2.attachClickHandler(element, {},
+    setCallback() {
+        this.auth2.attachClickHandler(
+            this.elementId,
+            {},
             (googleUser) => {
-                const profile = googleUser.getBasicProfile();
-                console.log('Token || ' + googleUser.getAuthResponse().id_token);
-                this.userToken = googleUser.getAuthResponse().id_token;
-                console.log('ID: ' + profile.getId());
-                this.userId = profile.getId();
-                console.log('Name: ' + profile.getName());
-                this.userName = profile.getName();
-                console.log('Image URL: ' + profile.getImageUrl());
-                this.userImageURL = profile.getImageUrl();
-                console.log('Email: ' + profile.getEmail());
-                this.userEmail = profile.getEmail();
+                this.profile = googleUser.getBasicProfile();
+
+                this.socialNetworkInfo = [{
+                    socialNetworking: 'google',
+                    userName: this.profile.getName(),
+                    userEmail: this.profile.getEmail(),
+                    userToken: googleUser.getAuthResponse().id_token,
+                    userId: this.profile.getId(),
+                    userImageURL: this.profile.getImageUrl(),
+                    expiresIn: '',
+                    signedRequest: ''
+                }]
+                //console.log(this.socialNetworkInfo)
             },
             (error) => {
                 console.log(JSON.stringify(error, undefined, 2));
                 // alert(JSON.stringify(error, undefined, 2));
         });
+
     }
 }
