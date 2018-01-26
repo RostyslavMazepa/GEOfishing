@@ -6,6 +6,8 @@ import { HomeComponent } from './home.component';
 import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { apiKeyGoogleMap } from "../../../environments/environment";
+
 
 @NgModule({
   imports: [
@@ -14,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HomeRoutingModule,
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do'
+        apiKey: apiKeyGoogleMap
     })
   ],
   declarations: [ HomeComponent ]
