@@ -52,8 +52,8 @@ export class RegisterComponent {
           error => {
               console.log('error')
           })
-      console.log(this.facebook.socialNetworkInfo)
-      console.log(this)
+      //console.log(this.facebook.socialNetworkInfo)
+      //console.log(this)
   }
 
 

@@ -1,6 +1,5 @@
 // '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com'
-import { SocialNetworkInfo } from "./SocialNetworkInfo";
-import {reject} from "q";
+import { SocialNetworkInfo } from './SocialNetworkInfo';
 
 declare const gapi: any;
 

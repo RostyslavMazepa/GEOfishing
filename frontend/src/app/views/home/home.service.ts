@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+// import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { DicFishType } from './DicFishType';
@@ -12,7 +13,7 @@ export class HomeService {
     allDicFishTypesUrl = 'http://localhost:8080/all-dicfishtypes';
     allDicFishKindsUrl = 'http://localhost:8080/all-dicfishkinds';
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
     }
     // Fetch all Fish Types
     getAllDicFishTypes(): Observable<DicFishType[]> {

@@ -52,7 +52,7 @@ export class Facebook {
             } else if (response.status === 'unknown'){
                 FB.logout()
             }
-            console.log(response.status)
+            //console.log(response.status)
         });
         // FB.login()
     }
