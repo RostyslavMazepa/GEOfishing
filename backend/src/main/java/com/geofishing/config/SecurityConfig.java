@@ -33,10 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.security-realm}")
     private String securityRealm;
 
-    @Value("${key-store.password}")
-    private String keyStorePass;
-
-
     @Autowired
     private UserDetailsService userDetailsService;
 
