@@ -1,10 +1,17 @@
 // '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com'
+import { SocialNetworkInfo } from './SocialNetworkInfo';
 
 declare const gapi: any;
 
 export class Google {
+
     private appId: string;
     private elementId: string;
+    private profile: any;
+
+    private socialNetworkInfo: SocialNetworkInfo[];
+
+    private auth2: any;
 
     private scope = [
         'profile',
@@ -14,18 +21,23 @@ export class Google {
         'https://www.googleapis.com/auth/admin.directory.user.readonly'
     ].join(' ');
 
-    public auth2: any;
-
     constructor(appId: string, elementId: string) {
         this.appId = appId;
         this.elementId = elementId;
 
         this.init();
+        //console.log(this.socialNetworkInfo)
     }
 
     login() {
-        // gapi.login()
+        //this.initSDK(
+        //this.getSocialNetworkInfo()
+        //this.socialNetworkInfo
+            //.then(result => console.log(result))
+            //.catch(error => console.log(error));
+
     }
+
 
     init() {
         let js;
@@ -43,40 +55,49 @@ export class Google {
         js.src = '//apis.google.com/js/platform.js?onload=init';
 
         ref.parentNode.insertBefore(js, ref);
-        // console.log(ref.parentNode.insertBefore(js, ref));
         js.onload = results => {
             this.initSDK()
         }
+        //console.log('init - 1');
     }
 
     initSDK() {
-        gapi.load('auth2', () => {
+        gapi.load(
+            'auth2',
+            () => {
             this.auth2 = gapi.auth2.init({
                 client_id: this.appId,
-                // client_secret: 'XD2DUg0b1hnvohJPo2UYiKOW',
-                // redirect_url: 'http://localhost:4200/#/pages/register',
-                // discoveryDocs: ['https://people.googleapis.com/$discovery/rest?version=v1'],
-                cookiepolicy: 'single_host_origin', // 'http://localhost:4200/#/pages/register',
+                cookiepolicy: 'single_host_origin',
                 scope: this.scope
             });
-            // this.attachSignin(this.element.nativeElement.firstChild);
-            this.setCallback(document.getElementById(this.elementId))
-        });
+            this.setCallback();
+            }
+        );
     }
 
-    setCallback(element) {
-        this.auth2.attachClickHandler(element, {},
+    setCallback() {
+        this.auth2.attachClickHandler(
+            this.elementId,
+            {},
             (googleUser) => {
-                const profile = googleUser.getBasicProfile();
-                console.log('Token || ' + googleUser.getAuthResponse().id_token);
-                console.log('ID: ' + profile.getId());
-                console.log('Name: ' + profile.getName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail());
+                this.profile = googleUser.getBasicProfile();
+
+                this.socialNetworkInfo = [{
+                    socialNetworking: 'google',
+                    userName: this.profile.getName(),
+                    userEmail: this.profile.getEmail(),
+                    userToken: googleUser.getAuthResponse().id_token,
+                    userId: this.profile.getId(),
+                    userImageURL: this.profile.getImageUrl(),
+                    expiresIn: '',
+                    signedRequest: ''
+                }]
+                //console.log(this.socialNetworkInfo)
             },
             (error) => {
                 console.log(JSON.stringify(error, undefined, 2));
                 // alert(JSON.stringify(error, undefined, 2));
         });
+
     }
 }

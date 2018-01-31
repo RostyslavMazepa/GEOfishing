@@ -6,3 +6,11 @@
 export const environment = {
   production: false
 };
+
+export const appIdFacebook = '149318269057115';
+export const msTimeoutFacebook = 1000;
+
+export const appIdGoogle = '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com';
+export const apiKeyGoogleMap = 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do';
+export const elementIdGoogle = 'googleBtn';
+export const msTimeoutGoogle = 1000;
