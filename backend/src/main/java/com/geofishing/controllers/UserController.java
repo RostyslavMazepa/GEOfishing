@@ -1,5 +1,8 @@
 package com.geofishing.controllers;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.geofishing.model.Role;
 import com.geofishing.model.User;
 import com.geofishing.repository.RoleRepository;
@@ -22,7 +25,7 @@ public class UserController {
     @Autowired
     RoleRepository roleRepository;
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAll")
     public List<User> retrieveUsers(){
         return userRepository.findAll();
     }
