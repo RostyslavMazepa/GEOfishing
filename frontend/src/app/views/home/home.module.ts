@@ -6,7 +6,7 @@ import { HomeComponent } from './home.component';
 import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { apiKeyGoogleMap } from "../../../environments/environment";
+import { apiKeyGoogleMap } from '../../../environments/environment';
 
 
 @NgModule({
