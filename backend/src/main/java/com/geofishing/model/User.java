@@ -40,7 +40,7 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "enabled",nullable = true)
+    @Column(name = "enabled",columnDefinition = "boolean")
     private Boolean enabled;
 
     private String secret;
@@ -145,7 +145,13 @@ public class User implements Serializable {
 
     }
 
+    public FacebookAccount getFacebookAccount() {
+        return facebookAccount;
+    }
 
+    public void setFacebookAccount(FacebookAccount facebookAccount) {
+        this.facebookAccount = facebookAccount;
+    }
 
     @Override
     public String toString() {

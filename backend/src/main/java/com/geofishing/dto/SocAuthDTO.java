@@ -4,6 +4,7 @@ public class SocAuthDTO {
 
     private String socialNetwork;
     private String username;
+    private String userEmail;
     private String userToken;
     private String userId;
     private String userImageURL;
@@ -13,9 +14,10 @@ public class SocAuthDTO {
     public SocAuthDTO() {
     }
 
-    public SocAuthDTO(String socialNetwork, String username, String userToken, String userId, String userImageURL, String expiresIn, String signedRequest) {
+    public SocAuthDTO(String socialNetwork, String username,String userEmail, String userToken, String userId, String userImageURL, String expiresIn, String signedRequest) {
         this.socialNetwork = socialNetwork;
         this.username = username;
+        this.userEmail = userEmail;
         this.userToken = userToken;
         this.userId = userId;
         this.userImageURL = userImageURL;
@@ -78,4 +80,8 @@ public class SocAuthDTO {
     public void setSignedRequest(String signedRequest) {
         this.signedRequest = signedRequest;
     }
+
+    public String getUserEmail() {return userEmail;}
+
+    public void setUserEmail(String userEmail) {this.userEmail = userEmail;}
 }

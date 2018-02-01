@@ -3,22 +3,26 @@ package com.geofishing.services;
 import com.geofishing.auth.UserAlreadyExistException;
 import com.geofishing.dto.UserDTO;
 import com.geofishing.model.PasswordResetToken;
-import com.geofishing.model.Role;
 import com.geofishing.model.User;
 import com.geofishing.model.VerificationToken;
 import com.geofishing.repository.PasswordResetTokenRepository;
 import com.geofishing.repository.RoleRepository;
 import com.geofishing.repository.UserRepository;
 import com.geofishing.repository.VerificationTokenRepository;
-import org.bouncycastle.jcajce.provider.keystore.BC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.AuthorizationRequest;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +55,21 @@ public class UserService implements IUserService {
     @Autowired
     private SessionRegistry sessionRegistry;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    AuthorizationServerTokenServices tokenServices;
+
+    @Autowired
+    ClientDetailsService clientDetailsService;
+
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
 
     public static String QR_PREFIX = "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
-    public static String APP_NAME = "SpringRegistration";
+    public static String APP_NAME = "GeoFishing";
 
     // API
 
@@ -199,5 +212,33 @@ public class UserService implements IUserService {
         return sessionRegistry.getAllPrincipals().stream().filter((u) -> !sessionRegistry.getAllSessions(u, false).isEmpty()).map(Object::toString).collect(Collectors.toList());
     }
 
+    public OAuth2AccessToken getUserToken(User user) {
+        HashMap<String, String> authorizationParameters = new HashMap<String, String>();
 
+        AuthorizationRequest authorizationRequest =
+                new AuthorizationRequest();
+        authorizationRequest.setApproved(true);
+        authorizationRequest.setClientId("geofappid");
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId("geofappid");
+        authorizationRequest.setResourceIdsAndAuthoritiesFromClientDetails(clientDetails);
+//        HashSet<String> resourceIds = new HashSet<>();
+//        resourceIds.add("geofresourceid");
+//        authorizationRequest.setResourceIds(resourceIds);
+//                 HashSet<String> scope = new HashSet<>();
+//                 scope.add("read");
+//                 scope.add("write");
+//                 authorizationRequest.setScope(scope);
+        // Create principal and auth token
+        UserDetails userPrincipal = userDetailsService.getUserDetails(user);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
+
+        OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest.createOAuth2Request(), authenticationToken);
+        authenticationRequest.setAuthenticated(true);
+
+        OAuth2AccessToken accessToken = tokenServices.createAccessToken(authenticationRequest);
+        return accessToken;
+
+
+    }
 }

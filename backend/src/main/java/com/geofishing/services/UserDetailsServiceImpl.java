@@ -25,7 +25,12 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         if(user == null) {
             throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
         }
+        return getUserDetails(user);
+        }
 
+
+
+    public UserDetails getUserDetails(User user){
         List<GrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -35,5 +40,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
                 User(user.getUsername(), user.getPassword(), user.getEnabled(), true,true,true, authorities);
 
         return userDetails;
+
     }
 }

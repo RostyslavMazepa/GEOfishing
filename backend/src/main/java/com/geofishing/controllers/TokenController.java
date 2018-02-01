@@ -23,7 +23,7 @@ public class TokenController {
 
     private String clientId = "geofappid";
 
-    @Resource(name = "tokenServices")
+    @Resource(name = "consumerTokenServices")
     ConsumerTokenServices tokenServices;
 
     @Resource(name = "tokenStore")

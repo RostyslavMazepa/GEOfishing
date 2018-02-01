@@ -19,7 +19,7 @@ public class FacebookService {
     @Value("${facebook.secret}")
     private String clientSecret;
 
-    public void verifyToken(String fbId, String fbToken){
+    public boolean verifyToken(String fbId, String fbToken){
             uriBuilder = URIBuilder.fromUri("https://graph.facebook.com/debug_token?");
             uriBuilder.queryParam("input_token",fbToken);
             uriBuilder.queryParam("access_token", clientId+"|"+clientSecret);
@@ -33,6 +33,7 @@ public class FacebookService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return true;
 
     }
 }
