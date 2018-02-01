@@ -7,10 +7,19 @@ export const environment = {
   production: false
 };
 
+// Authentication Facebook
 export const appIdFacebook = '149318269057115';
 export const msTimeoutFacebook = 1000;
 
-export const appIdGoogle = '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com';
+// Authentication Google Map
 export const apiKeyGoogleMap = 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do';
+
+// Authentication Google
 export const elementIdGoogle = 'googleBtn';
 export const msTimeoutGoogle = 1000;
+export const appIdGoogle = '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com';
+
+// Authentication BackEnd
+export const urlToken = 'http://localhost:8081/oauth/token';
+export const clientId = 'geofappid';
+export const clientSecret = 'mXunCZdhCD8tRA7a';
