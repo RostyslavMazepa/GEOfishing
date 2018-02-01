@@ -1,61 +1,39 @@
 package com.geofishing.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.geofishing.controllers.UserListSerializer;
-import org.hibernate.annotations.LazyToOne;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
-    private Long id;
-    @Column(name = "name")
-    private String name;
+public class Role extends Basic {
 
-    @OneToOne
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private String creator;
+    private User creator;
 
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+    private Collection<Privilege> privileges;
 
     public Role() {
     }
 
-    public Role(String name) {
-        this.name = name;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
-    @SequenceGenerator(sequenceName = "role_seq", allocationSize = 1, name = "ROLE_SEQ")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCreator() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     @JsonSerialize(using = UserListSerializer.class)
     public Set<User> getUsers() {
         return users;
@@ -65,5 +43,18 @@ public class Role {
         this.users = users;
     }
 
+    public Collection<Privilege> getPrivileges() {
+        return privileges;
+    }
 
+    public void setPrivileges(Collection<Privilege> privileges) {
+        this.privileges = privileges;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Role [name=").append(this.getName()).append("]").append("[id=").append(this.getId()).append("]");
+        return builder.toString();
+    }
 }

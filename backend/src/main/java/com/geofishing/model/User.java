@@ -1,10 +1,12 @@
 package com.geofishing.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.geofishing.controllers.RoleListSerializer;
+import org.apache.commons.codec.binary.Base32;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +20,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "USER_SEQ")
+    @SequenceGenerator(sequenceName = "user_seq",allocationSize = 1,name = "USER_SEQ")
     @Column(name = "id")
     private int userId;
 
@@ -37,15 +40,24 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "enabled")
-    private Integer enabled;
+    @Column(name = "enabled",columnDefinition = "boolean")
+    private Boolean enabled;
+
+    private String secret;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @OneToOne()
+    @JoinColumn(name = "fb_id")
+    private FacebookAccount facebookAccount;
+
+
     public User() {
         super();
+        this.secret = new RandomValueStringGenerator().generate();
+        this.enabled = false;
     }
 
     public int getUserId() {
@@ -88,6 +100,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+
     @JsonIgnore
     public String getPassword() {
         return password;
@@ -98,12 +111,23 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Integer getEnabled() {
-        return enabled;
+    public boolean getEnabled() {
+        if(enabled==null) {
+            return true;
+        }
+        return enabled.booleanValue();
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     @JsonSerialize(using = RoleListSerializer.class)
@@ -116,9 +140,17 @@ public class User implements Serializable {
     }
 
     public void addRole(Role role){
-        if(this.roles==null) this.roles = new HashSet<>();
+        if(this.roles==null) this.roles = new HashSet<Role>();
         this.roles.add(role);
 
+    }
+
+    public FacebookAccount getFacebookAccount() {
+        return facebookAccount;
+    }
+
+    public void setFacebookAccount(FacebookAccount facebookAccount) {
+        this.facebookAccount = facebookAccount;
     }
 
     @Override
