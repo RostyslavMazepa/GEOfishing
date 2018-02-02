@@ -1,7 +1,9 @@
 package com.geofishing.services;
 
 import com.geofishing.auth.UserAlreadyExistException;
+import com.geofishing.dto.SocAuthDTO;
 import com.geofishing.dto.UserDTO;
+import com.geofishing.model.ISocialAccount;
 import com.geofishing.model.PasswordResetToken;
 import com.geofishing.model.User;
 import com.geofishing.model.VerificationToken;
@@ -12,12 +14,11 @@ import com.geofishing.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -64,6 +65,9 @@ public class UserService implements IUserService {
     @Autowired
     ClientDetailsService clientDetailsService;
 
+    @Autowired
+    FacebookService facebookService;
+
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
@@ -78,12 +82,16 @@ public class UserService implements IUserService {
             throw new UserAlreadyExistException("There is an account with that email adress: " + accountDto.getEmail());
         }
         final User user = new User();
-
+        user.setUsername(accountDto.getUsername());
         user.setFirstName(accountDto.getFirstName());
         user.setLastName(accountDto.getLastName());
-        user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+        String pass = accountDto.getPassword();
+        if (pass == null || pass.isEmpty()) {
+            pass = new RandomValueStringGenerator().generate();
+        }
+        user.setPassword(passwordEncoder.encode(pass));
         user.setEmail(accountDto.getEmail());
-        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("USER"))));
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("TEMP_USER"))));
         return repository.save(user);
     }
 
@@ -141,6 +149,46 @@ public class UserService implements IUserService {
 
     public User findUserByEmail(final String email) {
         return repository.findByEmail(email);
+    }
+
+    public User findUserByFacebookAccount(final Long userId) {
+        return repository.findByFacebookAccount_UserId(userId);
+    }
+
+    public User findBySocialAccount(ISocialAccount sa, SocialNetwork sn) {
+        User user = null;
+        switch (sn) {
+            case FACEBOOK:
+                user = repository.findByFacebookAccount_UserIdOrEmail(sa.getUserId(), sa.getEmail());
+                break;
+            case GOOGLE:
+                user = repository.findByGoogleAccount_UserIdOrEmail(sa.getUserId(), sa.getEmail());
+                break;
+        }
+        return user;
+
+    }
+
+    public User bindSocialAccount(User user, SocAuthDTO dto, SocialNetwork sn) {
+        switch (sn) {
+            case FACEBOOK:
+                user = facebookService.bindFacebookAccount(user, dto);
+                break;
+            case GOOGLE: //TODO implement google binding;
+                break;
+        }
+        return user;
+    }
+
+    public boolean verifyToken(Long userId, String accessToken, SocialNetwork sn) {
+        switch (sn) {
+            case FACEBOOK:
+                return facebookService.verifyToken(userId, accessToken);
+            case GOOGLE: //TODO implement google token verification;
+                break;
+        }
+
+        return false;
     }
 
     @Override
@@ -213,7 +261,7 @@ public class UserService implements IUserService {
     }
 
     public OAuth2AccessToken getUserToken(User user) {
-        HashMap<String, String> authorizationParameters = new HashMap<String, String>();
+        HashMap<String, String> authorizationParameters = new HashMap<>();
 
         AuthorizationRequest authorizationRequest =
                 new AuthorizationRequest();
@@ -221,14 +269,6 @@ public class UserService implements IUserService {
         authorizationRequest.setClientId("geofappid");
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId("geofappid");
         authorizationRequest.setResourceIdsAndAuthoritiesFromClientDetails(clientDetails);
-//        HashSet<String> resourceIds = new HashSet<>();
-//        resourceIds.add("geofresourceid");
-//        authorizationRequest.setResourceIds(resourceIds);
-//                 HashSet<String> scope = new HashSet<>();
-//                 scope.add("read");
-//                 scope.add("write");
-//                 authorizationRequest.setScope(scope);
-        // Create principal and auth token
         UserDetails userPrincipal = userDetailsService.getUserDetails(user);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
@@ -236,8 +276,7 @@ public class UserService implements IUserService {
         OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest.createOAuth2Request(), authenticationToken);
         authenticationRequest.setAuthenticated(true);
 
-        OAuth2AccessToken accessToken = tokenServices.createAccessToken(authenticationRequest);
-        return accessToken;
+        return tokenServices.createAccessToken(authenticationRequest);
 
 
     }

@@ -6,7 +6,7 @@
     <groupId>com.geofishing</groupId>
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>GEOFishingBE</name>
     <description>GEOFishing backend</description>
 
@@ -109,7 +109,6 @@
             <version>2.4</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
