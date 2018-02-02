@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { AppService } from '../../app.service';
+import { LoginService } from './login.service';
 
 @Component({
   templateUrl: 'login.component.html',
-  providers: [AppService]
+  providers: [ LoginService ]
 })
 export class LoginComponent {
 
   public user = {username: '', password: ''};
 
-  constructor(private service: AppService) {}
+  constructor(private service: LoginService) {}
 
   login(){
     this.service.obtainAccessToken(this.user);
