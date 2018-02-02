@@ -3,9 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { P404Component } from './404.component';
 import { P500Component } from './500.component';
-import { LoginComponent } from './login.component';
-/*import { RegisterComponent } from './register.component';*/
-import { RegisterComponent } from "./register/register.component";
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {
@@ -35,15 +34,6 @@ const routes: Routes = [
           title: 'Login Page'
         }
       },
-        /*
-      {
-        path: 'register',
-        component: RegisterComponent,
-        data: {
-          title: 'Register Page'
-        }
-      },
-      */
       {
         path: 'register',
         component: RegisterComponent,

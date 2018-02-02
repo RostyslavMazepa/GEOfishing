@@ -33,7 +33,7 @@ export class RegisterComponent {
 
   loginFacebook() {
     this.facebook.login();
-      let promise = new Promise(
+      const promise = new Promise(
           (resolve, reject) => {
               setTimeout(() => {
                   resolve('result')
@@ -58,7 +58,7 @@ export class RegisterComponent {
 
 
   loginGoogle(){
-      let promise = new Promise(
+      const promise = new Promise(
           (resolve, reject) => {
               setTimeout(() => {
                   resolve('result')
