@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.geofishing.controllers.RoleListSerializer;
-import org.apache.commons.codec.binary.Base32;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 
 import javax.persistence.*;
@@ -15,13 +13,16 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@NamedEntityGraph(name = "fullInfo", attributeNodes = {
+        @NamedAttributeNode("roles"),
+        @NamedAttributeNode("facebookAccount")
+})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "USER_SEQ")
-    @SequenceGenerator(sequenceName = "user_seq",allocationSize = 1,name = "USER_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int userId;
 
@@ -50,9 +51,12 @@ public class User implements Serializable {
     private Set<Role> roles;
 
     @OneToOne()
-    @JoinColumn(name = "fb_id")
+    @JoinColumn(name = "fb_id", foreignKey = @ForeignKey(name = "FK_fb_account", foreignKeyDefinition = "bigint"))
     private FacebookAccount facebookAccount;
 
+    @OneToOne()
+    @JoinColumn(name = "gl_id", foreignKey = @ForeignKey(name = "FK_gl_account"))
+    private GoogleAccount googleAccount;
 
     public User() {
         super();
@@ -112,10 +116,7 @@ public class User implements Serializable {
     }
 
     public boolean getEnabled() {
-        if(enabled==null) {
-            return true;
-        }
-        return enabled.booleanValue();
+        return enabled == null || enabled;
     }
 
     public void setEnabled(Boolean enabled) {
@@ -140,11 +141,10 @@ public class User implements Serializable {
     }
 
     public void addRole(Role role){
-        if(this.roles==null) this.roles = new HashSet<Role>();
+        if (this.roles == null) this.roles = new HashSet<>();
         this.roles.add(role);
 
     }
-
     public FacebookAccount getFacebookAccount() {
         return facebookAccount;
     }
@@ -153,12 +153,23 @@ public class User implements Serializable {
         this.facebookAccount = facebookAccount;
     }
 
+    public GoogleAccount getGoogleAccount() {
+        return googleAccount;
+    }
+
+    public void setGoogleAccount(GoogleAccount googleAccount) {
+        this.googleAccount = googleAccount;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

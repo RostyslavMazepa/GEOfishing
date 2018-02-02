@@ -1,27 +1,28 @@
 package com.geofishing.dto;
 
-public class SocAuthDTO {
+import com.geofishing.model.ISocialAccount;
 
+public class SocAuthDTO implements ISocialAccount {
+    private Long userId;
     private String socialNetwork;
     private String username;
-    private String userEmail;
-    private String userToken;
-    private String userId;
-    private String userImageURL;
-    private String expiresIn;
+    private String email;
+    private String accessToken;
+    private String userPictureURL;
+    private Integer tokenExpiresIn;
     private String signedRequest;
 
     public SocAuthDTO() {
     }
 
-    public SocAuthDTO(String socialNetwork, String username,String userEmail, String userToken, String userId, String userImageURL, String expiresIn, String signedRequest) {
+    public SocAuthDTO(String userId, String socialNetwork, String username, String userEmail, String accessToken, String userImageURL, String tokenExpiresIn, String signedRequest) {
         this.socialNetwork = socialNetwork;
         this.username = username;
-        this.userEmail = userEmail;
-        this.userToken = userToken;
-        this.userId = userId;
-        this.userImageURL = userImageURL;
-        this.expiresIn = expiresIn;
+        this.email = userEmail;
+        this.accessToken = accessToken;
+        this.userId = Long.getLong(userId);
+        this.userPictureURL = userImageURL;
+        this.tokenExpiresIn = Integer.getInteger(tokenExpiresIn);
         this.signedRequest = signedRequest;
     }
 
@@ -41,36 +42,36 @@ public class SocAuthDTO {
         this.username = username;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public String getUserImageURL() {
-        return userImageURL;
+    public String getUserPictureURL() {
+        return userPictureURL;
     }
 
-    public void setUserImageURL(String userImageURL) {
-        this.userImageURL = userImageURL;
+    public void setUserPictureURL(String userPictureURL) {
+        this.userPictureURL = userPictureURL;
     }
 
-    public String getExpiresIn() {
-        return expiresIn;
+    public Integer getTokenExpiresIn() {
+        return tokenExpiresIn;
     }
 
-    public void setExpiresIn(String expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setTokenExpiresIn(Integer tokenExpiresIn) {
+        this.tokenExpiresIn = tokenExpiresIn;
     }
 
     public String getSignedRequest() {
@@ -81,7 +82,13 @@ public class SocAuthDTO {
         this.signedRequest = signedRequest;
     }
 
-    public String getUserEmail() {return userEmail;}
+    public String getEmail() {
+        return email;
+    }
 
-    public void setUserEmail(String userEmail) {this.userEmail = userEmail;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 }

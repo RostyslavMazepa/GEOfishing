@@ -5,19 +5,14 @@ public class UserDTO {
     private String lastName;
     private String password;
     private String email;
-    private String facebookId;
-    private String facebookImageURL;
-    private String facebookName;
-    private String facebookUserName;
+    private String username;
 
     public UserDTO() {
     }
 
     public UserDTO(SocAuthDTO dto) {
-        this.email = dto.getUserId();
-        this.facebookId = dto.getUserId();
-        this.facebookImageURL = dto.getUserImageURL();
-        this.facebookUserName = dto.getUsername();
+        this.email = dto.getEmail();
+        this.username = dto.getUsername().isEmpty() ? dto.getEmail() : dto.getUsername();
     }
 
     public String getFirstName() {
@@ -26,6 +21,14 @@ public class UserDTO {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -44,44 +47,12 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getFacebookId() {
-        return facebookId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
-    }
-
-    public String getFacebookImageURL() {
-        return facebookImageURL;
-    }
-
-    public void setFacebookImageURL(String facebookImageURL) {
-        this.facebookImageURL = facebookImageURL;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFacebookName() {
-        return facebookName;
-    }
-
-    public void setFacebookName(String facebookName) {
-        this.facebookName = facebookName;
-    }
-
-    public String getFacebookUserName() {
-        return facebookUserName;
-    }
-
-    public void setFacebookUserName(String facebookUserName) {
-        this.facebookUserName = facebookUserName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -91,10 +62,7 @@ public class UserDTO {
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", facebookId='" + facebookId + '\'' +
-                ", facebookImageURL='" + facebookImageURL + '\'' +
-                ", facebookName='" + facebookName + '\'' +
-                ", facebookUserName='" + facebookUserName + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }
