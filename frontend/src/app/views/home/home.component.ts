@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DicFishType } from './DicFishType';
 import { HomeService } from './home.service';
 import { DicFishKind } from './DicFishKind';
+import { AppService } from '../../app.service';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -14,7 +15,6 @@ export class HomeComponent implements OnInit {
     // Component properties
     statusCode: number;
     processValidation = false;
-    /*---------------------- Google Map ----------------------*/
 
     // initial center position for the map
     // title = 'Київ';
@@ -56,9 +56,41 @@ export class HomeComponent implements OnInit {
         }
     ];
 
+  // Create form fishingPlaceForm
+  fishingPlaceForm = new FormGroup({
+    fishingNameInput: new FormControl('', Validators.required),
+    fishingLongitudeInput: new FormControl('', Validators.required),
+    fishingLatitudeInput: new FormControl('', Validators.required),
+    fishingCommentsTextarea: new FormControl('', Validators.required)
+  });
+
+  /*---------------------- Fishing Form ----------------------*/
+
+  allFishTypes: DicFishType[];
+  allFishKinds: DicFishKind[];
+
+  // Create form fishingForm
+  fishingForm = new FormGroup({
+    fishKindSelect: new FormControl('', Validators.required),
+    fishTypeSelect: new FormControl('', Validators.required),
+  });
+
+  constructor(private fishingPlaceService: HomeService, private appService: AppService) { }
+
+  ngOnInit(): void {
+    this.getAllFishTypes();
+    this.getAllFishKinds();
+    this.appService.checkCredentials();
+  }
+/*
+  logout(){
+    this.appService.logout();
+  }
+*/
+  /*---------------------- Google Map ----------------------*/
     mapClicked($event: any) {
         // вбиваємо останній не збережений маркер
-        if (this.markers[this.markers.length - 1].reserved == false) {
+        if (this.markers[this.markers.length - 1].reserved === false) {
             this.markers.pop();
         }
         // добавляємо маркер при натисканні на карті
@@ -71,10 +103,10 @@ export class HomeComponent implements OnInit {
         // відображаємо координати в формі
         // console.log($event.coords.lat + ' ' + $event.coords.lng);
         this.fishingPlaceForm.setValue({
-            fishingNameFormControlInput: this.fishingPlaceForm.get('fishingNameFormControlInput').value.trim(),
-            fishingLongitudeFormControlInput: $event.coords.lat,
-            fishingLatitudeFormControlInput: $event.coords.lng,
-            fishingCommentsFormControlTextarea: this.fishingPlaceForm.get('fishingCommentsFormControlTextarea').value.trim()
+            fishingNameInput: this.fishingPlaceForm.get('fishingNameInput').value.trim(),
+            fishingLongitudeInput: $event.coords.lat,
+            fishingLatitudeInput: $event.coords.lng,
+            fishingCommentsTextarea: this.fishingPlaceForm.get('fishingCommentsTextarea').value.trim()
         })
     }
 
@@ -82,32 +114,18 @@ export class HomeComponent implements OnInit {
         console.log(`clicked the marker: ${label || index}`);
     }
 
-    markerDragEnd(marker: marker, $event: any) {
+    markerDragEnd( marker: marker, $event: any ) {
         console.log('dragEnd', marker, $event);
         // відображаємо координати в формі
         this.fishingPlaceForm.setValue({
-            fishingNameFormControlInput: this.fishingPlaceForm.get('fishingNameFormControlInput').value.trim(),
-            fishingLongitudeFormControlInput: $event.coords.lat,
-            fishingLatitudeFormControlInput: $event.coords.lng,
-            fishingCommentsFormControlTextarea: this.fishingPlaceForm.get('fishingCommentsFormControlTextarea').value.trim()
+            fishingNameInput: this.fishingPlaceForm.get('fishingNameInput').value.trim(),
+            fishingLongitudeInput: $event.coords.lat,
+            fishingLatitudeInput: $event.coords.lng,
+            fishingCommentsTextarea: this.fishingPlaceForm.get('fishingCommentsTextarea').value.trim()
         })
     }
 
 /*---------------------- Fishing Place Form ----------------------*/
-    // Create form
-    fishingPlaceForm = new FormGroup({
-        fishingNameFormControlInput: new FormControl('', Validators.required),
-        fishingLongitudeFormControlInput: new FormControl('', Validators.required),
-        fishingLatitudeFormControlInput: new FormControl('', Validators.required),
-        fishingCommentsFormControlTextarea: new FormControl('', Validators.required)
-    });
-
-    constructor(private fishingPlaceService: HomeService) { }
-
-    ngOnInit(): void {
-        this.getAllFishTypes();
-        this.getAllFishKinds();
-    }
 
     onFishingPlaceFormSubmit() {
         this.processValidation = true;
@@ -133,30 +151,18 @@ export class HomeComponent implements OnInit {
     }
 
     getAllFishTypeByKindId() {
-        const fishTypeKindValue = this.fishingForm.get('fishKindFormControlSelect').value.trim();
+        const fishTypeKindValue = this.fishingForm.get('fishKindSelect').value.trim();
         console.log(fishTypeKindValue);
         const onSelf = this.allFishKinds;
         let dicFishTypes;
         for (let i = 0; i < onSelf.length; ++i) {
-            if (onSelf[i].fishKindId == fishTypeKindValue){
+            if (onSelf[i].fishKindId === fishTypeKindValue){
                 dicFishTypes = onSelf[i].dicFishTypeSet;
                 console.log(dicFishTypes);
             }
         }
         this.allFishTypes = dicFishTypes;
     }
-
-    /*---------------------- Fishing Form ----------------------*/
-
-    allFishTypes: DicFishType[];
-    allFishKinds: DicFishKind[];
-
-    // Create form
-    fishingForm = new FormGroup({
-        fishKindFormControlSelect: new FormControl('', Validators.required),
-        fishTypeFormControlSelect: new FormControl('', Validators.required),
-    });
-
 }
 
 interface marker {

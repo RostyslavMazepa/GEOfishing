@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SocialNetworkInfo } from "./SocialNetworkInfo";
+import { SocialNetworkInfo } from './SocialNetworkInfo';
 
 declare const FB: any;
 
@@ -22,13 +22,13 @@ export class Facebook {
     login() {
         FB.getLoginStatus(response => {
             if (response.status === 'connected'){
-                let userId = response.authResponse.userID;
-                let userToken = response.authResponse.accessToken;
-                let expiresIn = response.authResponse.expiresIn;
-                let signedRequest = response.authResponse.signedRequest;
+                const userId = response.authResponse.userID;
+                const userToken = response.authResponse.accessToken;
+                const expiresIn = response.authResponse.expiresIn;
+                const signedRequest = response.authResponse.signedRequest;
 
                 new Promise((resolve, reject) => {
-                    let fields = [
+                    const fields = [
                         'id', 'name', 'email', 'picture'//, 'cover', 'birthday'
                     ];
                     FB.api(`/me?fields=${fields.toString()}`, (response: any) => {
@@ -36,15 +36,15 @@ export class Facebook {
                         this.socialNetworkInfo = [{
                             socialNetworking: 'facebook',
                             userName: response.name,
-                            userEmail: response.email||'',
+                            userEmail: response.email || '',
                             userToken: userToken,
                             userId: userId,
                             userImageURL: response.picture.data.url,
                             expiresIn: expiresIn,
                             signedRequest: signedRequest
                         }];
-                        //console.log(response)
-                        //console.log(this.socialNetworkInfo)
+                        // console.log(response)
+                        console.log('Facebook Token Id - ' + userToken)
                     });
                 });
             } else if (response.status === 'not_authorized'){
@@ -52,15 +52,15 @@ export class Facebook {
             } else if (response.status === 'unknown'){
                 FB.logout()
             }
-            //console.log(response.status)
+            // console.log(response.status)
         });
         // FB.login()
     }
 
     init() {
-        let js,
-            id = 'facebook-jssdk',
-            ref = document.getElementsByTagName('script')[0];
+        let js;
+        const id = 'facebook-jssdk';
+        const ref = document.getElementsByTagName('script')[0];
 
         if (document.getElementById(id)) {
             return;

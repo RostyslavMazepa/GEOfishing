@@ -54,7 +54,10 @@ export class Google {
         js.defer = true;
         js.src = '//apis.google.com/js/platform.js?onload=init';
 
-        ref.parentNode.insertBefore(js, ref);
+        window.onload = function () {
+          ref.parentNode.insertBefore(js, ref);
+        }
+
         js.onload = results => {
             this.initSDK()
         }
@@ -92,7 +95,7 @@ export class Google {
                     expiresIn: '',
                     signedRequest: ''
                 }]
-                //console.log(this.socialNetworkInfo)
+                console.log('Google Token Id - ' + googleUser.getAuthResponse().id_token);
             },
             (error) => {
                 console.log(JSON.stringify(error, undefined, 2));

@@ -1,5 +1,15 @@
 export const navigation = [
   {
+    name: 'Login',
+    url: '/login',
+    icon: 'icon-login'
+  },
+  {
+    name: 'Register',
+    url: '/register',
+    icon: 'icon-plus'
+  },
+  {
     name: 'Home',
     url: '/home',
     icon: 'icon-home'
@@ -111,7 +121,7 @@ export const navigation = [
     url: '/pages',
     icon: 'icon-star',
     children: [
-      {
+      /*{
         name: 'Login',
         url: '/pages/login',
         icon: 'icon-star'
@@ -120,7 +130,7 @@ export const navigation = [
         name: 'Register',
         url: '/pages/register',
         icon: 'icon-star'
-      },
+      },*/
       {
         name: 'Error 404',
         url: '/pages/404',
