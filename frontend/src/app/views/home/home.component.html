@@ -35,36 +35,36 @@
         <form [formGroup]="fishingPlaceForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishingNameFormControlInput">Name Place</label>
+            <label class="col-md-3 col-form-label" for="fishingNameInput">Name Place</label>
             <div class="col-md-9">
-              <input type="text" id="fishingNameFormControlInput" name="fishingNameFormControlInput" class="form-control" placeholder="Name Place">
-              <label *ngIf="fishingPlaceForm.get('fishingNameFormControlInput').invalid && processValidation"
+              <input type="text" id="fishingNameInput" name="fishingNameInput" class="form-control" placeholder="Name Place">
+              <label *ngIf="fishingPlaceForm.get('fishingNameInput').invalid && processValidation"
                      [ngClass] = "'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishingLongitudeFormControlInput">Longitude</label>
+            <label class="col-md-3 col-form-label" for="fishingLongitudeInput">Longitude</label>
             <div class="col-md-9">
-              <input formControlName="fishingLongitudeFormControlInput" type="text" id="fishingLongitudeFormControlInput" name="fishingLongitudeFormControlInput" class="form-control" placeholder="Longitude">
-              <label *ngIf="fishingPlaceForm.get('fishingLongitudeFormControlInput').invalid && processValidation"
+              <input formControlName="fishingLongitudeInput" type="text" id="fishingLongitudeInput" name="fishingLongitudeInput" class="form-control" placeholder="Longitude">
+              <label *ngIf="fishingPlaceForm.get('fishingLongitudeInput').invalid && processValidation"
                      [ngClass] = "'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishingLatitudeFormControlInput">Latitude</label>
+            <label class="col-md-3 col-form-label" for="fishingLatitudeInput">Latitude</label>
             <div class="col-md-9">
-              <input formControlName="fishingLatitudeFormControlInput" type="text" id="fishingLatitudeFormControlInput" name="fishingLatitudeFormControlInput" class="form-control" placeholder="Latitude">
-              <label *ngIf="fishingPlaceForm.get('fishingLatitudeFormControlInput').invalid && processValidation"
+              <input formControlName="fishingLatitudeInput" type="text" id="fishingLatitudeInput" name="fishingLatitudeInput" class="form-control" placeholder="Latitude">
+              <label *ngIf="fishingPlaceForm.get('fishingLatitudeInput').invalid && processValidation"
                      [ngClass] = "'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishingCommentsFormControlTextarea">Comments</label>
+            <label class="col-md-3 col-form-label" for="fishingCommentsTextarea">Comments</label>
             <div class="col-md-9">
-              <textarea id="fishingCommentsFormControlTextarea" name="fishingCommentsFormControlTextarea" rows="9" class="form-control" placeholder="Content.."></textarea>
+              <textarea id="fishingCommentsTextarea" name="fishingCommentsTextarea" rows="9" class="form-control" placeholder="Content.."></textarea>
             </div>
           </div>
 
@@ -84,30 +84,30 @@
         <form [formGroup]="fishingForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishKindFormControlSelect">Fish kind</label>
+            <label class="col-md-3 col-form-label" for="fishKindSelect">Fish kind</label>
             <div class="col-md-9">
-              <select (change) = "getAllFishTypeByKindId();" id="fishKindFormControlSelect" formControlName="fishKindFormControlSelect" class="form-control">
+              <select (change) = "getAllFishTypeByKindId();" id="fishKindSelect" formControlName="fishKindSelect" class="form-control">
                 <option value="0">Please select</option>
                 <option *ngFor="let dicFishKind of allFishKinds"
                         value="{{dicFishKind.fishKindId}}">{{dicFishKind.fishKindName}}
                 </option>
               </select>
             </div>
-            <label *ngIf="fishingForm.get('fishKindFormControlSelect').invalid && processValidation"
+            <label *ngIf="fishingForm.get('fishKindSelect').invalid && processValidation"
                    [ngClass] = "'error'"> Title is required. </label>
           </div>
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishTypeFormControlSelect">Fish type</label>
+            <label class="col-md-3 col-form-label" for="fishTypeSelect">Fish type</label>
             <div class="col-md-9">
-              <select id="fishTypeFormControlSelect" formControlName="fishTypeFormControlSelect" class="form-control">
+              <select id="fishTypeSelect" formControlName="fishTypeSelect" class="form-control">
                 <option value="0">Please select</option>
                 <option *ngFor="let dicFishType of allFishTypes"
                         value="{{dicFishType.fishTypeId}}">{{dicFishType.fishTypeName}}
                 </option>
               </select>
             </div>
-            <label *ngIf="fishingForm.get('fishTypeFormControlSelect').invalid && processValidation"
+            <label *ngIf="fishingForm.get('fishTypeSelect').invalid && processValidation"
                    [ngClass] = "'error'"> Title is required. </label>
           </div>
 

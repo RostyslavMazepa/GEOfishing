@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../../views/pages/login/login.service';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
-  providers: [ LoginService ]
+  providers: []
 })
 export class AppHeaderComponent {
-  constructor(private service: LoginService){}
+  constructor(private appService: AppService) {}
+
   logout(){
-    this.service.logout();
+    this.appService.logout();
   }
 }

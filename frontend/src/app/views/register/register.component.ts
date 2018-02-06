@@ -1,8 +1,7 @@
-///<reference path="../../../../../node_modules/@types/google-maps/index.d.ts"/>
 import { Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { appIdGoogle, elementIdGoogle, msTimeoutGoogle, appIdFacebook, msTimeoutFacebook } from "../../../../environments/environment";
+import { appIdGoogle, elementIdGoogle, msTimeoutGoogle, appIdFacebook, msTimeoutFacebook } from '../../../environments/environment';
 import { Facebook } from './register-facebook';
 import { Google } from './register-google';
 
@@ -52,8 +51,8 @@ export class RegisterComponent {
           error => {
               console.log('error')
           })
-      //console.log(this.facebook.socialNetworkInfo)
-      //console.log(this)
+      // console.log(this.facebook.socialNetworkInfo)
+      // console.log(this)
   }
 
 
