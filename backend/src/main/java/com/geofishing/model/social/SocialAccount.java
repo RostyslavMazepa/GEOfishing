@@ -1,4 +1,4 @@
-package com.geofishing.model;
+package com.geofishing.model.social;
 
 import javax.persistence.*;
 
@@ -9,12 +9,11 @@ import javax.persistence.*;
 public class SocialAccount implements ISocialAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long userId;
-    private String userPictureURL;
-    private String accessToken;
-    private String email;
-    private Integer tokenExpiresIn;
+    Long id;
+    String userId;
+    String userPictureURL;
+    String refreshToken;
+    String email;
 
 
     SocialAccount() {
@@ -24,7 +23,7 @@ public class SocialAccount implements ISocialAccount {
         this.userId = acc.getUserId();
         this.email = acc.getEmail();
         this.userPictureURL = acc.getUserPictureURL();
-        this.accessToken = acc.getAccessToken();
+        this.refreshToken = acc.getRefreshToken();
     }
 
     public Long getId() {
@@ -36,11 +35,11 @@ public class SocialAccount implements ISocialAccount {
     }
 
     @Override
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -53,12 +52,12 @@ public class SocialAccount implements ISocialAccount {
     }
 
     @Override
-    public String getAccessToken() {
-        return accessToken;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setRefreshToken(String accessToken) {
+        this.refreshToken = accessToken;
     }
 
     @Override
@@ -70,14 +69,6 @@ public class SocialAccount implements ISocialAccount {
         this.email = email;
     }
 
-    @Override
-    public Integer getTokenExpiresIn() {
-        return tokenExpiresIn;
-    }
-
-    public void setTokenExpiresIn(Integer tokenExpiresIn) {
-        this.tokenExpiresIn = tokenExpiresIn;
-    }
 
     @Override
     public String toString() {
@@ -85,9 +76,8 @@ public class SocialAccount implements ISocialAccount {
                 "id=" + id +
                 ", userId=" + userId +
                 ", userPictureURL='" + userPictureURL + '\'' +
-                ", accessToken='" + accessToken + '\'' +
+                ", accessToken='" + refreshToken + '\'' +
                 ", email='" + email + '\'' +
-                ", tokenExpiresIn=" + tokenExpiresIn +
                 '}';
     }
 }

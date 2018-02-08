@@ -1,5 +1,7 @@
 package com.geofishing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +16,7 @@ public class FishType implements Serializable{
     private String name;
 
     @OneToMany(mappedBy = "fishType")
+    @JsonBackReference
     private List<Fish> fishes;
 
     public FishType() {

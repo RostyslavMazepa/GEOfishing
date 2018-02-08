@@ -1,6 +1,8 @@
 package com.geofishing.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -18,9 +20,11 @@ public class Fish implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
+    @JsonManagedReference
     private FishType fishType;
 
     @ManyToMany
+    @JsonManagedReference
     private List<Location> locations;
 
     public int getFishId() {
@@ -39,11 +43,11 @@ public class Fish implements Serializable {
         this.fishName = fishName;
     }
 
-
     public FishType getFishType() {
         return fishType;
     }
-        public void setFishType(FishType fishType) {
+
+    public void setFishType(FishType fishType) {
         this.fishType = fishType;
     }
 

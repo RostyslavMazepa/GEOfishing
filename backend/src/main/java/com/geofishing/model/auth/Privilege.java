@@ -1,4 +1,4 @@
-package com.geofishing.model;
+package com.geofishing.model.auth;
 
 import javax.persistence.*;
 import java.util.Collection;

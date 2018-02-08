@@ -14,9 +14,9 @@ INSERT INTO fishingapp.USERS (user_name, EMAIL, password)
 VALUES ('bataeva', 'olha.i.b5@gmail.com', fishingapp.bcrypt('bataeva'));
 
 ----ROLES-----
-INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'ADMIN');
-INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'USER');
-INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'TEMP_USER');
+INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'ROLE_USER');
+INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'ROLE_TEMP_USER');
 
 ------user_roles----
 INSERT INTO fishingapp.user_role (user_id, role_id)
@@ -25,8 +25,8 @@ INSERT INTO fishingapp.user_role (user_id, role_id)
     r.id
   FROM fishingapp.users u CROSS JOIN fishingapp.roles r
   WHERE (u.user_name = 'yashchuk' OR
-         (u.user_name = 'mazepa' AND r.name = 'ADMIN') OR
-         (u.user_name = 'bataeva' AND r.name = 'USER')) AND
+         (u.user_name = 'mazepa' AND r.name = 'ROLE_ADMIN') OR
+         (u.user_name = 'bataeva' AND r.name = 'ROLE_USER')) AND
         NOT EXISTS(SELECT NULL
                    FROM user_role ur
                    WHERE ur.user_id = u.id AND ur.role_id = r.id);

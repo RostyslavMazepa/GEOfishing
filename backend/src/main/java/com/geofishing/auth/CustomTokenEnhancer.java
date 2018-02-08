@@ -1,4 +1,4 @@
-package com.geofishing.config;
+package com.geofishing.auth;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -15,6 +15,7 @@ public class CustomTokenEnhancer implements TokenEnhancer{
         User user = (User) authentication.getPrincipal();
         final Map<String, Object> additionalInfo = new HashMap<>();
         additionalInfo.put("authorities", user.getAuthorities());
+        //additionalInfo.put("expiration", accessToken.getExpiration());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

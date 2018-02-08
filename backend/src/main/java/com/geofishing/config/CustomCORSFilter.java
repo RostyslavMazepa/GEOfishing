@@ -27,7 +27,17 @@ public class CustomCORSFilter implements Filter{
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
+            if ("/oauth/token".equalsIgnoreCase(request.getRequestURI())) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("post grant_type, username and password usind basic auth");
+                response.getWriter().flush();
+                response.getWriter().close();
+            } else {
+
+                chain.doFilter(req, resp);
+
+            }
+
         } else {
             chain.doFilter(req, resp);
         }

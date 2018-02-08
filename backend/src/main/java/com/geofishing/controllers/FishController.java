@@ -1,13 +1,10 @@
 package com.geofishing.controllers;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.geofishing.model.Fish;
-import com.geofishing.model.Role;
-import com.geofishing.model.User;
 import com.geofishing.repository.FishRepository;
-import com.geofishing.repository.RoleRepository;
-import com.geofishing.repository.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Api(tags = "fishes")
 @RestController
 @RequestMapping(value = "/fishes")
 public class FishController {
@@ -23,23 +21,11 @@ public class FishController {
     @Autowired
     FishRepository fishRepository;
 
-
-
-    @RequestMapping(value = "/getAll")
+    @ApiOperation(value = "get fishes list", response = Fish.class, responseContainer = "List")
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
     public List<Fish> retrieveFishes(){
         return fishRepository.findAll();
     }
-
-
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    @ResponseBody
-    public Fish add(Fish fish) throws Exception {
-        Fish registered = fishRepository.save(fish);
-        if (registered == null) {throw new Exception("Something wrong...");}
-        System.out.println(        registered.getFishType().toString()
-        );
-        return registered;
-    }
-
 
 }

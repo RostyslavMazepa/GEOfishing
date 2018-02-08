@@ -1,6 +1,6 @@
 package com.geofishing.services;
 
-import com.geofishing.model.User;
+import com.geofishing.model.auth.User;
 import com.geofishing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
