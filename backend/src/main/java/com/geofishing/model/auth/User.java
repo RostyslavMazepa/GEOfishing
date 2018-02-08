@@ -1,9 +1,11 @@
-package com.geofishing.model;
+package com.geofishing.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.geofishing.controllers.RoleListSerializer;
+import com.geofishing.dto.RoleListSerializer;
+import com.geofishing.model.social.FacebookAccount;
+import com.geofishing.model.social.GoogleAccount;
 import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 
 import javax.persistence.*;
@@ -26,7 +28,7 @@ public class User implements Serializable {
     @Column(name = "id")
     private int userId;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true)
     private String username;
 
     @Column(name = "first_name")
@@ -41,7 +43,7 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "enabled",columnDefinition = "boolean")
+    @Column(name = "enabled", columnDefinition = "boolean")
     private Boolean enabled;
 
     private String secret;
@@ -51,7 +53,7 @@ public class User implements Serializable {
     private Set<Role> roles;
 
     @OneToOne()
-    @JoinColumn(name = "fb_id", foreignKey = @ForeignKey(name = "FK_fb_account", foreignKeyDefinition = "bigint"))
+    @JoinColumn(name = "fb_id", foreignKey = @ForeignKey(name = "FK_fb_account"))
     private FacebookAccount facebookAccount;
 
     @OneToOne()
@@ -59,10 +61,10 @@ public class User implements Serializable {
     private GoogleAccount googleAccount;
 
     public User() {
-        super();
         this.secret = new RandomValueStringGenerator().generate();
         this.enabled = false;
     }
+
 
     public int getUserId() {
         return userId;
@@ -76,7 +78,7 @@ public class User implements Serializable {
         return username;
     }
 
-    public void setUsername(String username)    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -140,11 +142,12 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public void addRole(Role role){
+    public void addRole(Role role) {
         if (this.roles == null) this.roles = new HashSet<>();
         this.roles.add(role);
 
     }
+
     public FacebookAccount getFacebookAccount() {
         return facebookAccount;
     }

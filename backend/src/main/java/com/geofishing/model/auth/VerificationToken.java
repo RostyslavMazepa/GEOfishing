@@ -1,37 +1,37 @@
-package com.geofishing.model;
+package com.geofishing.model.auth;
 
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-public class PasswordResetToken {
+@Table(name = "verification_token")
+public class VerificationToken {
     private static final int EXPIRATION = 60 * 30;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
     private User user;
 
     private Date expiryDate;
 
-    public PasswordResetToken() {
+    public VerificationToken() {
         super();
     }
 
-    public PasswordResetToken(final String token) {
+    public VerificationToken(final String token) {
         super();
 
         this.token = token;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
-    public PasswordResetToken(final String token, final User user) {
+    public VerificationToken(final String token, final User user) {
         super();
 
         this.token = token;
@@ -39,7 +39,6 @@ public class PasswordResetToken {
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
-    //
     public Long getId() {
         return id;
     }
@@ -103,7 +102,7 @@ public class PasswordResetToken {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PasswordResetToken other = (PasswordResetToken) obj;
+        final VerificationToken other = (VerificationToken) obj;
         if (expiryDate == null) {
             if (other.expiryDate != null) {
                 return false;

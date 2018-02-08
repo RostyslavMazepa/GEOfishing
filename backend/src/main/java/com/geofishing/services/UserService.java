@@ -1,12 +1,11 @@
 package com.geofishing.services;
 
 import com.geofishing.auth.UserAlreadyExistException;
-import com.geofishing.dto.SocAuthDTO;
 import com.geofishing.dto.UserDTO;
-import com.geofishing.model.ISocialAccount;
-import com.geofishing.model.PasswordResetToken;
-import com.geofishing.model.User;
-import com.geofishing.model.VerificationToken;
+import com.geofishing.model.auth.PasswordResetToken;
+import com.geofishing.model.auth.User;
+import com.geofishing.model.auth.VerificationToken;
+import com.geofishing.model.social.ISocialAccount;
 import com.geofishing.repository.PasswordResetTokenRepository;
 import com.geofishing.repository.RoleRepository;
 import com.geofishing.repository.UserRepository;
@@ -36,44 +35,34 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserService implements IUserService {
 
-
-    @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private VerificationTokenRepository tokenRepository;
-
-    @Autowired
-    private PasswordResetTokenRepository passwordTokenRepository;
-
-    @Autowired
-    @Qualifier("encoder")
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private SessionRegistry sessionRegistry;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    AuthorizationServerTokenServices tokenServices;
-
-    @Autowired
-    ClientDetailsService clientDetailsService;
-
-    @Autowired
-    FacebookService facebookService;
-
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
-
     public static String QR_PREFIX = "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
     public static String APP_NAME = "GeoFishing";
+    @Autowired
+    AuthorizationServerTokenServices tokenServices;
+    @Autowired
+    ClientDetailsService clientDetailsService;
+    @Autowired
+    FacebookService facebookService;
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private VerificationTokenRepository tokenRepository;
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
+    @Autowired
+    @Qualifier("encoder")
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private SessionRegistry sessionRegistry;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    GoogleService googleService;
 
     // API
 
@@ -92,6 +81,18 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(pass));
         user.setEmail(accountDto.getEmail());
         user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("TEMP_USER"))));
+        return repository.save(user);
+    }
+
+    public User registerNewUserAccount(String email, String firstName, String lastName) {
+
+        final User user = new User();
+        user.setUsername(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(passwordEncoder.encode(new RandomValueStringGenerator().generate()));
+        user.setEmail(email);
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("USER"))));
         return repository.save(user);
     }
 
@@ -169,10 +170,10 @@ public class UserService implements IUserService {
 
     }
 
-    public User bindSocialAccount(User user, SocAuthDTO dto, SocialNetwork sn) {
+    public User bindSocialAccount(User user, String accessToken, String refreshToken, SocialNetwork sn) {
         switch (sn) {
             case FACEBOOK:
-                user = facebookService.bindFacebookAccount(user, dto);
+                user = facebookService.bindFacebookAccount(user, null, accessToken, refreshToken);
                 break;
             case GOOGLE: //TODO implement google binding;
                 break;
@@ -180,15 +181,15 @@ public class UserService implements IUserService {
         return user;
     }
 
-    public boolean verifyToken(Long userId, String accessToken, SocialNetwork sn) {
+    public AuthResult authFlow(String accessToken, String refreshToken, SocialNetwork sn) {
         switch (sn) {
             case FACEBOOK:
-                return facebookService.verifyToken(userId, accessToken);
-            case GOOGLE: //TODO implement google token verification;
-                break;
+                return facebookService.authFlow(accessToken, refreshToken);
+            case GOOGLE:
+                return googleService.authFlow(accessToken, refreshToken);
         }
 
-        return false;
+        return null;
     }
 
     @Override
@@ -277,7 +278,8 @@ public class UserService implements IUserService {
         authenticationRequest.setAuthenticated(true);
 
         return tokenServices.createAccessToken(authenticationRequest);
-
-
     }
+
+
+
 }

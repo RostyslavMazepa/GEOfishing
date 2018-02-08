@@ -1,5 +1,7 @@
 package com.geofishing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.geofishing.model.auth.User;
 import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
@@ -25,6 +27,7 @@ public class Location {
 
     @ManyToMany
     @JoinTable(name = "fish_locaction", joinColumns = @JoinColumn(name = "loc_id"),inverseJoinColumns = @JoinColumn(name = "fish_id"))
+    @JsonBackReference
     private List<Fish> fishes;
 
     public Location() {

@@ -1,7 +1,7 @@
-package com.geofishing.model;
+package com.geofishing.model.auth;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.geofishing.controllers.UserListSerializer;
+import com.geofishing.dto.UserListSerializer;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -9,14 +9,21 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role extends Basic {
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
 
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     private User creator;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> users;
 
     @ManyToMany
@@ -24,6 +31,22 @@ public class Role extends Basic {
     private Collection<Privilege> privileges;
 
     public Role() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getCreator() {
@@ -53,8 +76,12 @@ public class Role extends Basic {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("Role [name=").append(this.getName()).append("]").append("[id=").append(this.getId()).append("]");
-        return builder.toString();
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", creator=" + creator +
+                ", users=" + users +
+                ", privileges=" + privileges +
+                '}';
     }
 }

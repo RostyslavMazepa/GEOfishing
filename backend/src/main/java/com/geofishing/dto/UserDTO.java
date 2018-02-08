@@ -1,18 +1,20 @@
 package com.geofishing.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("UserDTO")
 public class UserDTO {
     private String firstName;
     private String lastName;
+    @ApiModelProperty(required = true)
     private String password;
+    @ApiModelProperty(required = true)
     private String email;
+    @ApiModelProperty(required = true)
     private String username;
 
     public UserDTO() {
-    }
-
-    public UserDTO(SocAuthDTO dto) {
-        this.email = dto.getEmail();
-        this.username = dto.getUsername().isEmpty() ? dto.getEmail() : dto.getUsername();
     }
 
     public String getFirstName() {

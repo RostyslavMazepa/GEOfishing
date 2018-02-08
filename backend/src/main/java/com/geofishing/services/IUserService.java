@@ -2,9 +2,9 @@ package com.geofishing.services;
 
 import com.geofishing.auth.UserAlreadyExistException;
 import com.geofishing.dto.UserDTO;
-import com.geofishing.model.PasswordResetToken;
-import com.geofishing.model.User;
-import com.geofishing.model.VerificationToken;
+import com.geofishing.model.auth.PasswordResetToken;
+import com.geofishing.model.auth.User;
+import com.geofishing.model.auth.VerificationToken;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
