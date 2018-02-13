@@ -2,6 +2,8 @@ package com.geofishing.model;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.geofishing.controllers.Views;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,8 +16,10 @@ public class Fish implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(Views.Dictionary.class)
     private int fishId;
     @Column(name = "fish_name")
+    @JsonView(Views.Dictionary.class)
     private String fishName;
 
     @ManyToOne

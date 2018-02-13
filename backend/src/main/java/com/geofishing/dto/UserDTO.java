@@ -3,14 +3,19 @@ package com.geofishing.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+
 @ApiModel("UserDTO")
 public class UserDTO {
     private String firstName;
     private String lastName;
+    @NotNull
     @ApiModelProperty(required = true)
     private String password;
+    @NotNull
     @ApiModelProperty(required = true)
     private String email;
+    @NotNull
     @ApiModelProperty(required = true)
     private String username;
 
