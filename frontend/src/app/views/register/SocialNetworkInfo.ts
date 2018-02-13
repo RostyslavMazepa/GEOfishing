@@ -1,5 +1,5 @@
 export class SocialNetworkInfo {
-    constructor(public socialNetworking: string,
+    constructor(public socialNetwork: string,
                 public userName: string,
                 public userEmail: string,
                 public userToken: string,
