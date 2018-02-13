@@ -80,7 +80,7 @@ public class UserService implements IUserService {
         }
         user.setPassword(passwordEncoder.encode(pass));
         user.setEmail(accountDto.getEmail());
-        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("TEMP_USER"))));
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("ROLE_TEMP_USER"))));
         return repository.save(user);
     }
 

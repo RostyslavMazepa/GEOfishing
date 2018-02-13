@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @EntityGraph(value = "fullInfo", type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"facebookAccount", "roles"})
     User getUserByUsername(String username);
+
+    boolean existsByUsernameOrEmail(String username, String email);
+
 }

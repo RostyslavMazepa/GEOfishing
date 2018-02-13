@@ -12,8 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -25,15 +27,21 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-
+    //TODO: implemept all repository calls in UserService
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     ModelMapper modelMapper;
-
     @Autowired
     UserService userService;
+    @Autowired
+    UserDTOValidator dtoValidator;
+
+    @InitBinder("userDTO")
+    public void setupBinder(WebDataBinder binder) {
+        binder.addValidators(dtoValidator);
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -49,16 +57,16 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{username}/info", method = RequestMethod.GET)
     @ResponseBody
     public User getUser(@PathVariable("username") String username) {
         return userRepository.getUserByUsername(username);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public User createUser(@RequestBody UserDTO userDTO) {
+    public User createUser(@Valid @RequestBody UserDTO userDTO) {
         //Post post = convertToEntity(postDto);
         User user = userService.registerNewUserAccount(userDTO);
         return user;
