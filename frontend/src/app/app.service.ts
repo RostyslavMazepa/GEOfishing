@@ -1,17 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { clientId, clientSecret, urlToken } from '../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {clientId, clientSecret, urlToken} from '../environments/environment';
+import {Router} from '@angular/router';
+import {Cookie} from 'ng2-cookies';
 
 @Injectable()
 export class AppService {
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private route: ActivatedRoute
-  ) { }
+  constructor(private router: Router,
+              private http: HttpClient) {
+  }
 
   obtainAccessToken(userName, userPassword) {
     // отримати токен доступу з обліковими даними користувача
@@ -28,7 +26,7 @@ export class AppService {
       }
     );
 
-    this.http.post(urlToken, params.toString(), { headers: headers })
+    this.http.post(urlToken, params.toString(), {headers: headers})
       .subscribe(
         (data) => {
           this.saveToken(data);
@@ -49,17 +47,17 @@ export class AppService {
     this.router.navigate(['/home']/*, { relativeTo: this.route }*/);
   }
 
-  checkCredentials(){
-    if (!Cookie.check('access_token')){
+  checkCredentials() {
+    if (!Cookie.check('access_token')) {
       this.router.navigate(['/login']/*, { relativeTo: this.route }*/);
     }
   }
 
   logout() {
-    console.log('delete access_token')
+    // console.log('delete access_token')
     Cookie.delete('access_token');
     this.router.navigate(['/login']/*, { relativeTo: this.route }*/);
-    console.log(this.router)
+    // console.log(this.router)
   }
 
 }

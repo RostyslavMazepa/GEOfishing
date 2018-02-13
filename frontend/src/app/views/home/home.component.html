@@ -1,6 +1,6 @@
 <!--/.row-->
 <div class="row">
-  <div class="col-lg-6"> <!--.col-->
+  <div class="stales-6"> <!--.col-->
     <div class="card">
       <!-- http://plnkr.co/edit/YX7W20?p=preview -->
       <div class="card-header">
@@ -8,18 +8,20 @@
       </div>
       <div class="card-body">
         <agm-map
-                [latitude]="lat"
-                [longitude]="lng"
-                [zoom]="zoom"
-                (mapClick)="mapClicked($event)">
+          [latitude]="centerPosition.lat"
+          [longitude]="centerPosition.lng"
+          [zoom]="zoom"
+          [styles]="customStyleMap"
+          (mapClick)="mapClicked($event)">
           <agm-marker
-                  *ngFor="let marker of markers; let i = index"
-                  (markerClick)="clickedMarker(marker.label, i)"
-                  [latitude]="marker.lat"
-                  [longitude]="marker.lng"
-                  [label]="marker.label"
-                  [markerDraggable]="marker.draggable"
-                  (dragEnd)="markerDragEnd(marker, $event)">
+            *ngFor="let markerMap of markersMap; let i = index"
+            (markerClick)="clickedMarker(markerMap.label, i)"
+            [latitude]="markerMap.lat"
+            [longitude]="markerMap.lng"
+            [label]="markerMap.label"
+            [markerDraggable]="markerMap.draggable"
+            [iconUrl]="markerMap.iconUrl"
+            (dragEnd)="markerDragEnd(markerMap, $event)">
           </agm-marker>
         </agm-map>
       </div>
@@ -32,46 +34,53 @@
         <strong>Fishing Place Form</strong>
       </div>
       <div class="card-body">
-        <form [formGroup]="fishingPlaceForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <form [formGroup]="fishingPlaceForm" action="" method="post" enctype="multipart/form-data"
+              class="form-horizontal">
 
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="fishingNameInput">Name Place</label>
             <div class="col-md-9">
-              <input type="text" id="fishingNameInput" name="fishingNameInput" class="form-control" placeholder="Name Place">
+              <input type="text" id="fishingNameInput" name="fishingNameInput" class="form-control"
+                     placeholder="Name Place">
               <label *ngIf="fishingPlaceForm.get('fishingNameInput').invalid && processValidation"
-                     [ngClass] = "'error'"> Title is required. </label>
+                     [ngClass]="'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="fishingLongitudeInput">Longitude</label>
             <div class="col-md-9">
-              <input formControlName="fishingLongitudeInput" type="text" id="fishingLongitudeInput" name="fishingLongitudeInput" class="form-control" placeholder="Longitude">
+              <input formControlName="fishingLongitudeInput" type="text" id="fishingLongitudeInput"
+                     name="fishingLongitudeInput" class="form-control" placeholder="Longitude">
               <label *ngIf="fishingPlaceForm.get('fishingLongitudeInput').invalid && processValidation"
-                     [ngClass] = "'error'"> Title is required. </label>
+                     [ngClass]="'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="fishingLatitudeInput">Latitude</label>
             <div class="col-md-9">
-              <input formControlName="fishingLatitudeInput" type="text" id="fishingLatitudeInput" name="fishingLatitudeInput" class="form-control" placeholder="Latitude">
+              <input formControlName="fishingLatitudeInput" type="text" id="fishingLatitudeInput"
+                     name="fishingLatitudeInput" class="form-control" placeholder="Latitude">
               <label *ngIf="fishingPlaceForm.get('fishingLatitudeInput').invalid && processValidation"
-                     [ngClass] = "'error'"> Title is required. </label>
+                     [ngClass]="'error'"> Title is required. </label>
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="fishingCommentsTextarea">Comments</label>
             <div class="col-md-9">
-              <textarea id="fishingCommentsTextarea" name="fishingCommentsTextarea" rows="9" class="form-control" placeholder="Content.."></textarea>
+              <textarea id="fishingCommentsTextarea" name="fishingCommentsTextarea" rows="9" class="form-control"
+                        placeholder="Content.."></textarea>
             </div>
           </div>
 
         </form>
       </div>
       <div class="card-footer">
-        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i
+          class="fa fa-dot-circle-o"></i> Submit
+        </button>
         <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
       </div>
     </div>
@@ -84,37 +93,39 @@
         <form [formGroup]="fishingForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishKindSelect">Fish kind</label>
+            <label class="col-md-3 col-form-label" for="fishesTypesSelect">Fish kind</label>
             <div class="col-md-9">
-              <select (change) = "getAllFishTypeByKindId();" id="fishKindSelect" formControlName="fishKindSelect" class="form-control">
+              <select id="fishesTypesSelect" formControlName="fishesTypesSelect" class="form-control">
                 <option value="0">Please select</option>
-                <option *ngFor="let dicFishKind of allFishKinds"
-                        value="{{dicFishKind.fishKindId}}">{{dicFishKind.fishKindName}}
+                <option *ngFor="let dicFishesType of dicFishesTypes"
+                        value="{{dicFishesType.id}}">{{dicFishesType.name}}
                 </option>
               </select>
             </div>
-            <label *ngIf="fishingForm.get('fishKindSelect').invalid && processValidation"
-                   [ngClass] = "'error'"> Title is required. </label>
+            <label *ngIf="fishingForm.get('fishesTypesSelect').invalid && processValidation"
+                   [ngClass]="'error'"> Title is required. </label>
           </div>
 
           <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="fishTypeSelect">Fish type</label>
+            <label class="col-md-3 col-form-label" for="fishesSelect">Fish type</label>
             <div class="col-md-9">
-              <select id="fishTypeSelect" formControlName="fishTypeSelect" class="form-control">
+              <select id="fishesSelect" formControlName="fishesSelect" class="form-control">
                 <option value="0">Please select</option>
-                <option *ngFor="let dicFishType of allFishTypes"
-                        value="{{dicFishType.fishTypeId}}">{{dicFishType.fishTypeName}}
+                <option *ngFor="let dicFish of dicFishes"
+                        value="{{dicFish.fishId}}">{{dicFish.fishName}}
                 </option>
               </select>
             </div>
-            <label *ngIf="fishingForm.get('fishTypeSelect').invalid && processValidation"
-                   [ngClass] = "'error'"> Title is required. </label>
+            <label *ngIf="fishingForm.get('fishesSelect').invalid && processValidation"
+                   [ngClass]="'error'"> Title is required. </label>
           </div>
 
         </form>
       </div>
       <div class="card-footer">
-        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        <button (click)="onFishingPlaceFormSubmit" type="submit" class="btn btn-sm btn-primary"><i
+          class="fa fa-dot-circle-o"></i> Submit
+        </button>
         <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
       </div>
     </div>

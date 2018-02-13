@@ -1,48 +1,38 @@
-import { Injectable } from '@angular/core';
-// import { Http, Response } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
-import { DicFishType } from './DicFishType';
-import { DicFishKind } from './DicFishKind';
+import {DicFishes} from './DicFishes';
+import {DicFishesTypes} from './DicFishesTypes';
+import {dicFishesUrl, dicFishesTypesUrl} from '../../../environments/environment';
 
 @Injectable()
 export class HomeService {
 
-    // URLs for CRUD operations
-    allDicFishTypesUrl = 'http://localhost:8080/all-dicfishtypes';
-    allDicFishKindsUrl = 'http://localhost:8080/all-dicfishkinds';
+  constructor(private http: HttpClient) {
+  }
 
-    constructor(private http: HttpClient) {
-    }
-    // Fetch all Fish Types
-    getAllDicFishTypes(): Observable<DicFishType[]> {
-        return this.http.get(this.allDicFishTypesUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+  // Fetch Fishes
+  getDicFishes(): Observable<DicFishes[]> {
+    return this.http.get(dicFishesUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-    getAllDicFishTypeByKindId(fishTypeKindId: string): Observable<DicFishType[]> {
-        return this.http.get(this.allDicFishTypesUrl, {
-            params: {
-                id: fishTypeKindId
-            }
-        }).map(this.extractData).catch(this.handleError);
-    }
+  // Fetch Fishes Types
+  getDicFishesTypes(): Observable<DicFishesTypes[]> {
+    return this.http.get(dicFishesTypesUrl)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-    // Fetch all Fish Kinds
-    getAllDicFishKinds(): Observable<DicFishKind[]> {
-        return this.http.get(this.allDicFishKindsUrl)
-            .map(this.extractData).catch(this.handleError);
-    }
+  private extractData(body: Response) {
+    // const body = res.json();
+    return body;
+  }
 
-    private extractData(res: Response) {
-        const body = res.json();
-        return body;
-    }
-
-    private handleError (error: Response | any) {
-        console.error(error.message || error);
-        return Observable.throw(error.status);
-    }
+  private handleError(error: Response | any) {
+    console.error(error.message || error);
+    return Observable.throw(error.status);
+  }
 }
