@@ -21,7 +21,7 @@ public class UserListSerializer extends JsonSerializer<Set<User>>
         public void setUserid(int id) {this.userid = id;}
         public String getUsername() {return username;}
         public void setUsername(String username) {this.username = username;}
-    }   ;
+    }
 
     @Override
     public void serialize(Set<User> users, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {

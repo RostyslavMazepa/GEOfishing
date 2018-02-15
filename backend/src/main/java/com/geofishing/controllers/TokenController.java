@@ -1,6 +1,7 @@
 package com.geofishing.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
+import io.swagger.annotations.Api;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Api(tags = "authentication")
 @Controller
 public class TokenController {
 
@@ -35,10 +37,11 @@ public class TokenController {
         tokenServices.revokeToken(tokenId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/tokens")
+    @PreAuthorize("hasRole(ADMIN)")
+    @RequestMapping(method = RequestMethod.GET, value = "/oauth/tokens")
     @ResponseBody
     public List<String> getTokens() {
-        List<String> tokenValues = new ArrayList<String>();
+        List<String> tokenValues = new ArrayList<>();
         Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientId(clientId);
         if (tokens != null) {
             System.out.println("tokens count:"+tokens.size());
@@ -49,7 +52,7 @@ public class TokenController {
         return tokenValues;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/tokens/revokeRefreshToken/{tokenId:.*}")
+    @RequestMapping(method = RequestMethod.POST, value = "/oauth/tokens/revokeRefreshToken/{tokenId:.*}")
     @ResponseBody
     public String revokeRefreshToken(@PathVariable String tokenId) {
         if (tokenStore instanceof JdbcTokenStore) {

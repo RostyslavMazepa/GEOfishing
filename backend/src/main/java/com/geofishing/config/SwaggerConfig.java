@@ -1,5 +1,6 @@
 package com.geofishing.config;
 
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -13,17 +14,19 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.function.Predicate;
+
 
 @Configuration
 @EnableSwagger2
-@PropertySource(value = "classpath:application.properties")
+@PropertySource(value = "classpath:application.yml")
 public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                .paths((com.google.common.base.Predicate<String>) getPaths())
                 .build()
                 .genericModelSubstitutes(ResponseEntity.class)
                 .apiInfo(getApiInfo())
@@ -43,13 +46,19 @@ public class SwaggerConfig {
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
                 .contact(contact)
-                .build();
+                .build()
+                ;
 
     }
 
-//    @Bean
-//    AlternateTypeRuleConvention jacksonSerializerConvention(TypeResolver resolver) {
-//       return new JacksonSerializerConvention(resolver, "org.springframework.security.oauth2.common");
-//
-//    }
+
+    private Predicate<String> getPaths() {
+        return ((Predicate<String>)
+                Predicates.not(PathSelectors.ant("/actuator/**"))::apply)
+                .and(Predicates.not(PathSelectors.regex("/error"))::apply)
+                .and(Predicates.not(PathSelectors.regex("/oauth/authorize"))::apply)
+                .and(Predicates.not(PathSelectors.regex("/oauth/confirm_access"))::apply)
+                .and(Predicates.not(PathSelectors.regex("/oauth/error"))::apply);
+
+    }
 }

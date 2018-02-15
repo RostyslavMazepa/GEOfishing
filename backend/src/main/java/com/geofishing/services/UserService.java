@@ -68,7 +68,7 @@ public class UserService implements IUserService {
 
     public User registerNewUserAccount(final UserDTO accountDto) {
         if (emailExist(accountDto.getEmail())) {
-            throw new UserAlreadyExistException("There is an account with that email adress: " + accountDto.getEmail());
+            throw new UserAlreadyExistException("There is an account with that email address: " + accountDto.getEmail());
         }
         final User user = new User();
         user.setUsername(accountDto.getUsername());
@@ -152,7 +152,7 @@ public class UserService implements IUserService {
         return repository.findByEmail(email);
     }
 
-    public User findUserByFacebookAccount(final Long userId) {
+    public User findUserByFacebookAccount(final String userId) {
         return repository.findByFacebookAccount_UserId(userId);
     }
 
@@ -262,8 +262,6 @@ public class UserService implements IUserService {
     }
 
     public OAuth2AccessToken getUserToken(User user) {
-        HashMap<String, String> authorizationParameters = new HashMap<>();
-
         AuthorizationRequest authorizationRequest =
                 new AuthorizationRequest();
         authorizationRequest.setApproved(true);
@@ -280,6 +278,12 @@ public class UserService implements IUserService {
         return tokenServices.createAccessToken(authenticationRequest);
     }
 
+    public boolean isUsernameFree(String username) {
+        return !repository.existsByUsername(username);
+    }
 
+    public boolean isEmailFree(String email) {
+        return !repository.existsByEmail(email);
+    }
 
 }

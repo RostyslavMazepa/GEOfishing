@@ -27,7 +27,7 @@ public class UserDTOValidator implements Validator {
         UserDTO userDTO = (UserDTO) target;
 
         if (userRepository.existsByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail())) {
-            errors.rejectValue("email", "email.duplicate", "User with such email alrady exists");
+            errors.rejectValue("email", "email.duplicate", "User with such email already exists");
         }
     }
 }

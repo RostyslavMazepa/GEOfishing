@@ -1,8 +1,10 @@
 package com.geofishing.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.geofishing.controllers.Views;
 
 import javax.persistence.*;
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "fishes")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "fish_id")
 public class Fish implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,7 +29,7 @@ public class Fish implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    @JsonManagedReference
+    @JsonView(Views.Dictionary.class)
     private FishType fishType;
 
     @ManyToMany

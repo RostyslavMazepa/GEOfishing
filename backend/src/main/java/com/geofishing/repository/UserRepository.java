@@ -10,10 +10,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
 
-    @Query("select u from User u left join fetch u.roles where u.username = :username")
-    User findByUsernameWithRoles(@Param("username") String username);
+    @Query("select u from User u left join fetch u.roles where u.username = :identifiable or u.email= :identifiable")
+    User getUserWithRolesByUsernameOrEmail(@Param("identifiable") String identifiable);
 
-    User findByFacebookAccount_UserId(Long userId);
+    User findByFacebookAccount_UserId(String userId);
 
     User findByFacebookAccount_UserIdOrEmail(String userId, String email);
 
@@ -25,5 +25,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User getUserByUsername(String username);
 
     boolean existsByUsernameOrEmail(String username, String email);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 
 }

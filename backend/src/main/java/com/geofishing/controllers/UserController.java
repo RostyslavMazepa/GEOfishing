@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-    //TODO: implemept all repository calls in UserService
+    //TODO: implement all repository calls in UserService
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -45,7 +46,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<User> retrieveUsers(){
+    public List<User> retrieveUsers() {
         return userRepository.findAll();
     }
 
@@ -72,9 +73,26 @@ public class UserController {
         return user;
     }
 
+    @ApiOperation(value = "check if username or email free", response = boolean.class)
+    @RequestMapping(value = "/checkIfCredentialAvailable", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Boolean> isCredentialAvailable(@RequestParam("field") String fieldName, @RequestParam("value") String value) {
+        switch (fieldName) {
+            case "user_name":
+                return new ResponseEntity<>(userService.isUsernameFree(value), HttpStatus.OK);
+            case "email":
+                return new ResponseEntity<>(userService.isEmailFree(value), HttpStatus.OK);
+            default:
+                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+
+        }
+
+    }
+
     private UserDTO convertToDto(User user) {
         UserDTO postDto = modelMapper.map(user, UserDTO.class);
         return postDto;
     }
+
 
 }
