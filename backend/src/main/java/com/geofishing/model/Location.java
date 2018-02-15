@@ -26,7 +26,7 @@ public class Location {
     private User creator;
 
     @ManyToMany
-    @JoinTable(name = "fish_locaction", joinColumns = @JoinColumn(name = "loc_id"),inverseJoinColumns = @JoinColumn(name = "fish_id"))
+    @JoinTable(name = "fish_location", joinColumns = @JoinColumn(name = "loc_id"), inverseJoinColumns = @JoinColumn(name = "fish_id"))
     @JsonBackReference
     private List<Fish> fishes;
 

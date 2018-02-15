@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
 
-@Api(tags = "socialAuth")
+@Api(tags = "authentication")
 @RestController
 public class AuthController {
 
@@ -25,7 +25,7 @@ public class AuthController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity greeting() {
+    public ResponseEntity<String> greeting() {
         return new ResponseEntity("Hi, this is a resource server. Please go to the main page - geosportfishing.top", HttpStatus.OK);
     }
 

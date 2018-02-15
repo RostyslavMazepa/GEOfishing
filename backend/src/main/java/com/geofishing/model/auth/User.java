@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Column(name = "id")
     private int userId;
 
-    @Column(name = "user_name", unique = true)
+    @Column(name = "login", unique = true)
     private String username;
 
     @Column(name = "first_name")
@@ -37,7 +37,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
