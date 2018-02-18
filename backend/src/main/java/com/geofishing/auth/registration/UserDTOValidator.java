@@ -1,6 +1,6 @@
-package com.geofishing.controllers;
+package com.geofishing.auth.registration;
 
-import com.geofishing.dto.UserDTO;
+import com.geofishing.auth.json.UserDTO;
 import com.geofishing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

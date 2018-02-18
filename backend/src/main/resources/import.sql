@@ -6,12 +6,11 @@ TRUNCATE TABLE fishingapp.users CASCADE;
 COMMIT;
 
 -----USERS---
-INSERT INTO fishingapp.USERS (login, EMAIL, last_name, first_name, password)
-VALUES ('yashchuk', 'yashchuk@gmail.com', 'Ящук', 'Родіон', fishingapp.bcrypt('yashchuk'));
-INSERT INTO fishingapp.USERS (login, EMAIL, password)
-VALUES ('mazepa', 'rostyslav.mazepa@gmail.com', fishingapp.bcrypt('mazepa'));
-INSERT INTO fishingapp.USERS (login, EMAIL, password)
-VALUES ('bataeva', 'olha.i.b5@gmail.com', fishingapp.bcrypt('bataeva'));
+INSERT INTO fishingapp.USERS (login, EMAIL, last_name, first_name, password, enabled)
+VALUES
+  ('yashchuk', 'yashchuk@gmail.com', 'Ящук', 'Родіон', fishingapp.bcrypt('yashchuk'), FALSE),
+  ('mazepa', 'rostyslav.mazepa@gmail.com', 'Мазепа', 'Ростислав', fishingapp.bcrypt('mazepa'), NULL),
+  ('bataeva', 'olha.i.b5@gmail.com', 'Батаєва', 'Ольга', fishingapp.bcrypt('bataeva'), NULL);
 
 ----ROLES-----
 INSERT INTO fishingapp.roles (created_by, name) VALUES (1, 'ROLE_ADMIN');

@@ -1,4 +1,4 @@
-package com.geofishing.controllers;
+package com.geofishing.auth.oauth;
 
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;

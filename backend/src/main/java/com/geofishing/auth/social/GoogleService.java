@@ -1,9 +1,11 @@
-package com.geofishing.services;
+package com.geofishing.auth.social;
 
+import com.geofishing.auth.AuthResult;
 import com.geofishing.model.auth.User;
 import com.geofishing.model.social.GoogleAccount;
 import com.geofishing.repository.GoogleAccountRepository;
 import com.geofishing.repository.UserRepository;
+import com.geofishing.services.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;

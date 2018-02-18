@@ -1,4 +1,4 @@
-package com.geofishing.dto;
+package com.geofishing.auth.social;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

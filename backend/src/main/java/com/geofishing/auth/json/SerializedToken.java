@@ -1,15 +1,15 @@
-package com.geofishing.auth.swagger;
+package com.geofishing.auth.json;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
 public class SerializedToken {
-    String access_token;
-    String token_type;
-    String refresh_token;
-    String expires_in;
-    String scope;
+    private String access_token;
+    private String token_type;
+    private String refresh_token;
+    private String expires_in;
+    private String scope;
     List<SimpleGrantedAuthority> authorities;
 
     public String getAccess_token() {

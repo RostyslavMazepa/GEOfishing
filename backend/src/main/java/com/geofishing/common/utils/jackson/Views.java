@@ -1,4 +1,4 @@
-package com.geofishing.controllers;
+package com.geofishing.common.utils.jackson;
 
 public final class Views {
 

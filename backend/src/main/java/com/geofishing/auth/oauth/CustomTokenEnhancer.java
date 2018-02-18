@@ -1,4 +1,4 @@
-package com.geofishing.auth;
+package com.geofishing.auth.oauth;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
