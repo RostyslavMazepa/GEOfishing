@@ -1,4 +1,4 @@
-package com.geofishing.json;
+package com.geofishing.common.utils.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.introspect.Annotated;

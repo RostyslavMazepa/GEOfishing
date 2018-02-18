@@ -2,6 +2,7 @@ package com.geofishing.controllers;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.geofishing.common.utils.jackson.Views;
 import com.geofishing.model.Fish;
 import com.geofishing.model.FishType;
 import com.geofishing.repository.FishRepository;

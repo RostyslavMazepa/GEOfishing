@@ -1,7 +1,13 @@
 package com.geofishing.services;
 
+import com.geofishing.auth.AuthResult;
 import com.geofishing.auth.UserAlreadyExistException;
-import com.geofishing.dto.UserDTO;
+import com.geofishing.auth.UserDetailsServiceImpl;
+import com.geofishing.auth.json.UserDTO;
+import com.geofishing.auth.registration.OnRegistrationCompleteEvent;
+import com.geofishing.auth.social.FacebookService;
+import com.geofishing.auth.social.GoogleService;
+import com.geofishing.auth.social.SocialNetwork;
 import com.geofishing.model.auth.PasswordResetToken;
 import com.geofishing.model.auth.User;
 import com.geofishing.model.auth.VerificationToken;
@@ -12,6 +18,8 @@ import com.geofishing.repository.UserRepository;
 import com.geofishing.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +55,10 @@ public class UserService implements IUserService {
     @Autowired
     FacebookService facebookService;
     @Autowired
+    ApplicationEventPublisher eventPublisher;
+    @Autowired
+    GoogleService googleService;
+    @Autowired
     private UserRepository repository;
     @Autowired
     private VerificationTokenRepository tokenRepository;
@@ -61,8 +73,6 @@ public class UserService implements IUserService {
     private SessionRegistry sessionRegistry;
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    GoogleService googleService;
 
     // API
 
@@ -248,8 +258,8 @@ public class UserService implements IUserService {
 //        User currentUser = (User) curAuth.getPrincipal();
 //        currentUser.setUsing2FA(use2FA);
 //        currentUser = repository.save(currentUser);
-//        final Authentication auth = new UsernamePasswordAuthenticationToken(currentUser, currentUser.getPassword(), curAuth.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(auth);
+//        final Authentication model = new UsernamePasswordAuthenticationToken(currentUser, currentUser.getPassword(), curAuth.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(model);
 //        return currentUser;
 //    }
 
@@ -286,4 +296,12 @@ public class UserService implements IUserService {
         return !repository.existsByEmail(email);
     }
 
+    private void publishEvent(ApplicationEvent event) {
+        eventPublisher.publishEvent(event);
+    }
+
+    public void publishRegistrationComplete(User user, Locale locale, String appUrl) {
+        publishEvent(new OnRegistrationCompleteEvent(user, locale, appUrl));
+
+    }
 }

@@ -1,6 +1,6 @@
 package com.geofishing.model.social;
 
-import com.geofishing.dto.FacebookUser;
+import com.geofishing.auth.social.FacebookUser;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

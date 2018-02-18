@@ -1,6 +1,6 @@
 package com.geofishing.config;
 
-import com.geofishing.services.UserDetailsServiceImpl;
+import com.geofishing.auth.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,10 +1,11 @@
-package com.geofishing.services;
+package com.geofishing.auth.social;
 
-import com.geofishing.dto.FacebookUser;
+import com.geofishing.auth.AuthResult;
 import com.geofishing.model.auth.User;
 import com.geofishing.model.social.FacebookAccount;
 import com.geofishing.repository.FacebookAccountRepository;
 import com.geofishing.repository.UserRepository;
+import com.geofishing.services.UserService;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;

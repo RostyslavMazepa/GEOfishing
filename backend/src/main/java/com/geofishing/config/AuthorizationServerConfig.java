@@ -1,6 +1,6 @@
 package com.geofishing.config;
 
-import com.geofishing.auth.CustomTokenEnhancer;
+import com.geofishing.auth.oauth.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -89,7 +89,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     @Primary
     //Making this primary to avoid any accidental duplication with another token service instance of the same name
-    public AuthorizationServerTokenServices tokenServices() {
+    public DefaultTokenServices tokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(appConfig.tokenStore());
         defaultTokenServices.setSupportRefreshToken(true);

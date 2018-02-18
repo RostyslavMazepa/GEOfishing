@@ -1,9 +1,9 @@
-package com.geofishing.services;
+package com.geofishing.auth;
 
 import com.geofishing.model.auth.User;
 
 public class AuthResult {
-    User user;
+    private User user;
     private AuthResultType resultType;
 
     public AuthResult(User user, AuthResultType resultType) {

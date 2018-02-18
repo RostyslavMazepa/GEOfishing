@@ -1,4 +1,4 @@
-package com.geofishing.services;
+package com.geofishing.auth;
 
 import com.geofishing.model.auth.User;
 import com.geofishing.repository.UserRepository;

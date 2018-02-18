@@ -13,7 +13,7 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomCORSFilter implements Filter{
     @Override
-    public void init(FilterConfig fc) throws ServletException {
+    public void init(FilterConfig fc) {
     }
 
     @Override
@@ -29,9 +29,6 @@ public class CustomCORSFilter implements Filter{
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             if ("/oauth/token".equalsIgnoreCase(request.getRequestURI())) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("post grant_type, username and password usind basic auth");
-                response.getWriter().flush();
-                response.getWriter().close();
             } else {
 
                 chain.doFilter(req, resp);
