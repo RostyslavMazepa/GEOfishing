@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   templateUrl: 'login.component.html'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
   processValidation = false;
 

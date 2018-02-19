@@ -8,9 +8,9 @@ export class Facebook {
   private appId: string;
 
   public response = new BehaviorSubject<boolean>(false);
-  public data = this.response.asObservable();
+  public responseUser = new BehaviorSubject<boolean>(false);
 
-  private socialNetworkInfo: SocialNetworkInfo[];
+  private socialNetworkInfo: SocialNetworkInfo;
 
   constructor(appId: string) {
     this.appId = appId;
@@ -19,41 +19,10 @@ export class Facebook {
   }
 
   login() {
-    FB.getLoginStatus(response => {
-      if (response.status === 'connected') {
-        const userId = response.authResponse.userID;
-        const userToken = response.authResponse.accessToken;
-        const expiresIn = response.authResponse.expiresIn;
-        const signedRequest = response.authResponse.signedRequest;
-
-        new Promise((resolve, reject) => {
-          const fields = [
-            'id', 'name', 'email', 'picture'//, 'cover', 'birthday'
-          ];
-          FB.api(`/me?fields=${fields.toString()}`, (response: any) => {
-            resolve(response);
-            this.socialNetworkInfo = [{
-              socialNetwork: 'facebook',
-              userName: response.name,
-              userEmail: response.email || '',
-              userToken: userToken,
-              userId: userId,
-              userImageURL: response.picture.data.url,
-              expiresIn: expiresIn,
-              signedRequest: signedRequest
-            }];
-            // console.log(response)
-            console.log('Facebook Token Id - ' + userToken)
+          const fields = ['id', 'name', 'email', 'picture'];
+          FB.api(`/me?fields=${fields.toString()}`, (responseUser: any) => {
+            this.responseUser.next(responseUser);
           });
-        });
-      } else if (response.status === 'not_authorized') {
-        FB.login()
-      } else if (response.status === 'unknown') {
-        FB.logout()
-      }
-      // console.log(response.status)
-    });
-    // FB.login()
   }
 
   init() {
@@ -101,21 +70,4 @@ export class Facebook {
       // user is now logged out
     });
   }
-
-  /*
-  post
-
-  localhost:8081/oauth/socialAuth
-
-  {
-    "socialNetwork": "facebook",
-    "username": "Rodion  Iashchuk",
-    "userEmail": "yashchuk@gmail.com",
-    "userToken": "EAAcsnEr99UsBAO0MzZBvWdGtfkb3UiFUfpSasMbZBMeZAJpLKabsmZA5ad93E9oxxG6bGIu9r040a1xpRZCrANfBCAO8k6srisClLD7AnMrOZCFLX3dg4t4hGGm2UZB2y58mxGgKFi6iZA0rKkUE5Mfe5tj1sq5Os2aAV5IIkDvFbKPGHG7qdIr67bSGsRtpmkcZD",
-    "userId": "1281501468621067",
-    "userImageURL": "",
-    "expiresIn": "",
-    "signedRequest": ""
-  }
-   */
 }
