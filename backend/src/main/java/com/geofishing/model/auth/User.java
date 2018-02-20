@@ -3,9 +3,10 @@ package com.geofishing.model.auth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.geofishing.dto.RoleListSerializer;
+import com.geofishing.auth.json.RoleListSerializer;
 import com.geofishing.model.social.FacebookAccount;
 import com.geofishing.model.social.GoogleAccount;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 
 import javax.persistence.*;
@@ -38,6 +39,7 @@ public class User implements Serializable {
     private String lastName;
 
     @Column(name = "email", unique = true)
+    @Email
     private String email;
 
     @Column(name = "password")
