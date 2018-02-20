@@ -7,30 +7,31 @@ export const environment = {
   production: false
 };
 
+const host = 'localhost';
+const port = '8081';
+
 /** Authentication Facebook */
 export const appIdFacebook = '149318269057115';
-export const msTimeoutFacebook = 3000;
 
 /** Authentication Google Map */
 export const apiKeyGoogleMap = 'AIzaSyD12SCHQuKvio_rOlz0Opgxo21Jd3xP1do';
 
 /** Authentication Google */
 export const elementIdGoogle = 'googleBtn';
-export const msTimeoutGoogle = 3000;
 export const appIdGoogle = '834859447878-vj9upm5llmp4asg6ben3b5n4tnjs3d4v.apps.googleusercontent.com';
 
 /** Authentication BackEnd */
-export const urlToken = 'http://localhost:8081/oauth/token';
+export const urlToken = 'http://' + host + ':' + port + '/oauth/token';
 export const clientId = 'geofappid';
 export const clientSecret = 'mXunCZdhCD8tRA7a';
 
 /** URLs for CRUD operations Dictionary BackEnd */
-export const dicFishesUrl = 'http://localhost:8081/fishes/';
-export const dicFishesTypesUrl = 'http://localhost:8081/fishes/types/';
+export const dicFishesUrl = 'http://' + host + ':' + port + '/fishes/';
+export const dicFishesTypesUrl = 'http://' + host + ':' + port + '/fishes/types/';
 
 /** URLs for POST operation Auth BackEnd */
-export const urlSocialAuth = 'http://localhost:8081/oauth/socialAuth/';
-export const urlRegisterAuth = 'http://localhost:8081/users/register/';
+export const urlSocialAuth = 'http://' + host + ':' + port + '/oauth/socialAuth/';
+export const urlRegisterAuth = 'http://' + host + ':' + port + '/users/register';
 
 /** Authentication https://home.openweathermap.org */
 export const appIdOpenWeatherMap = '289dee5d308891597dc6f37fe40cbfa6';
