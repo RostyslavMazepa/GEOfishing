@@ -5,14 +5,12 @@ import {SocialNetworkInfo} from './SocialNetworkInfo';
 import {
   appIdGoogle,
   elementIdGoogle,
-  msTimeoutGoogle,
-  appIdFacebook,
-  msTimeoutFacebook
+  appIdFacebook
 } from '../../../environments/environment';
 import {Facebook} from './register-facebook';
 import {Google} from './register-google';
 import {RegisterService} from './register.service';
-import {RegisterUser} from "../home/RegisterUser";
+import {RegisterUser} from '../home/RegisterUser';
 
 @Component({
   templateUrl: 'register.component.html',
@@ -61,10 +59,16 @@ export class RegisterComponent {
 
     const registerUser = new RegisterUser(userName, lastName, firstName, userEmail, userPassword);
     this.registerService.createAccount(registerUser)
-      .subscribe(successCode => {
+      .subscribe(
+        successCode => {
           this.statusCode = successCode;
+          console.log(successCode)
         },
-        errorCode => this.statusCode = errorCode);
+        errorCode => {
+          this.statusCode = errorCode
+          console.log('Error - ' + errorCode)
+        }
+      );
   }
 
   loginFacebook() {
