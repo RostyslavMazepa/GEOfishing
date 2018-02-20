@@ -45,7 +45,7 @@ export class Google{
                 userImageURL: data['w3']['Paa'],
                 expiresIn: data['Zi']['expires_in'],
                 signedRequest: data['Zi']['expires_at']
-              }
+              };
               return this.socialNetworkInfo;
               // console.log(this.socialNetworkInfo)
             }
@@ -62,9 +62,12 @@ export class Google{
     const id = 'google-jssdk';
     const ref = document.getElementsByTagName('script')[0];
 
+    console.log(ref)
+
     if (document.getElementById(id)) {
       return;
     }
+    console.log(document.getElementById(id))
 
     js = document.createElement('script');
     js.id = id;
@@ -72,14 +75,11 @@ export class Google{
     js.defer = true;
     js.src = '//apis.google.com/js/platform.js?onload=init';
 
-    window.onload = function () {
-      ref.parentNode.insertBefore(js, ref);
-    };
+    ref.parentNode.insertBefore(js, ref);
 
     js.onload = results => {
       this.initSDK()
     };
-    // console.log('init - 1');
   }
 
   initSDK() {
@@ -91,55 +91,17 @@ export class Google{
           cookiepolicy: 'single_host_origin',
           scope: this.scope
         });
-        /*
-        this.auth2.attachClickHandler(
-          this.elementId,
-          {},
-          (googleUser) => {
-
-            console.log(googleUser.getBasicProfile())
-            console.log(googleUser.getAuthResponse())
-          },
-          (error) => {
-            console.log(JSON.stringify(error, undefined, 2));
-          })
-          */
-       // console.log(this.auth2)
         this.setCallback();
-
       }
     );
   }
 
   setCallback() {
-
     this.auth2.attachClickHandler(
       this.elementId,
       {},
       (response) => {
-        // this.googleUser = googleUser;
         this.response.next(response);
-        // console.log(response);
-        // console.log(this.response);
-        /*
-        this.profile = googleUser.getBasicProfile();
-
-        this.socialNetworkInfo = {
-          socialNetwork: 'google',
-          userName: this.profile.getName(),
-          userEmail: this.profile.getEmail(),
-          userToken: googleUser.getAuthResponse().id_token,
-          userId: this.profile.getId(),
-          userImageURL: this.profile.getImageUrl(),
-          expiresIn: '',
-          signedRequest: ''
-        };
-        */
-
-        // return this.socialNetworkInfo
-        // console.log('Google Token Id - ' + googleUser.getAuthResponse().id_token);
-        // console.log(this.socialNetworkInfo)
-        // return this.socialNetworkInfo
       },
       (error) => {
         console.log(JSON.stringify(error, undefined, 2));
