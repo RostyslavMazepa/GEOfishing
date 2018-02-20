@@ -1,7 +1,7 @@
 package com.geofishing.model.auth;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.geofishing.dto.UserListSerializer;
+import com.geofishing.auth.json.UserListSerializer;
 
 import javax.persistence.*;
 import java.util.Collection;
