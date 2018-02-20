@@ -8,7 +8,7 @@ export const environment = {
 };
 
 const host = 'localhost';
-const port = '8081';
+const port = '8080';
 
 /** Authentication Facebook */
 export const appIdFacebook = '149318269057115';
@@ -31,7 +31,7 @@ export const dicFishesTypesUrl = 'http://' + host + ':' + port + '/fishes/types/
 
 /** URLs for POST operation Auth BackEnd */
 export const urlSocialAuth = 'http://' + host + ':' + port + '/oauth/socialAuth/';
-export const urlRegisterAuth = 'http://' + host + ':' + port + '/users/register';
+export const urlRegisterAuth = 'http://' + host + ':' + port + '/registration';
 
 /** Authentication https://home.openweathermap.org */
 export const appIdOpenWeatherMap = '289dee5d308891597dc6f37fe40cbfa6';

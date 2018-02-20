@@ -53,8 +53,10 @@ export class RegisterService {
     const headers = new HttpHeaders(
       { 'Content-Type': 'application/json' }
     );
-    console.log(registerUser)
-    return this.http.post(urlRegisterAuth, registerUser.toString(), {headers: headers})
+
+    console.log(registerUser);
+
+    return this.http.post(urlRegisterAuth, registerUser, {headers: headers})
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -66,8 +68,10 @@ export class RegisterService {
   }
 
   private extractData(res: Response) {
+    // console.error(res);
     return res;
   }
+
   private handleError (error: Response | any) {
     console.error(error.message || error);
     return Observable.throw(error.status);

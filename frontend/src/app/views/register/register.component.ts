@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SocialNetworkInfo} from './SocialNetworkInfo';
+import {Router} from '@angular/router';
 
 import {
   appIdGoogle,
@@ -11,12 +12,13 @@ import {Facebook} from './register-facebook';
 import {Google} from './register-google';
 import {RegisterService} from './register.service';
 import {RegisterUser} from '../home/RegisterUser';
+import {Cookie} from 'ng2-cookies';
 
 @Component({
   templateUrl: 'register.component.html',
   providers: [RegisterService]
 })
-export class RegisterComponent {
+export class RegisterComponent{
 
   facebook: any;
   google: any;
@@ -40,9 +42,12 @@ export class RegisterComponent {
     userRepeatPassword: new FormControl('', Validators.required)
   });
 
-  constructor(private registerService: RegisterService) {
-    this.facebook = new Facebook(appIdFacebook);
+  constructor(
+    private registerService: RegisterService,
+    private router: Router
+  ) {
     this.google = new Google(appIdGoogle, elementIdGoogle);
+    this.facebook = new Facebook(appIdFacebook);
   }
 
   createAccount() {
@@ -63,10 +68,17 @@ export class RegisterComponent {
         successCode => {
           this.statusCode = successCode;
           console.log(successCode)
+          const expireDate = new Date().getTime() + (1000 * successCode['expires_in']);
+          Cookie.set('access_token', successCode['access_token'], expireDate);
+          Cookie.set('authority', successCode['authorities'][0]['authority']);
+          this.router.navigate(['/home']);
+          console.log(successCode['authorities'][0]['authority'])
+          // <a href="localhost:8080/registration/emailConfirm?token=46c73c59-5501-4999-913a-a42eee0543d8"
+          // target="_blank" rel="noopener">localhost:8080/registration/emailConfirm?token=46c73c59-5501-4999-913a-a42eee0543d8</a>
         },
         errorCode => {
           this.statusCode = errorCode
-          console.log('Error - ' + errorCode)
+          // console.log('Error - ' + errorCode)
         }
       );
   }
