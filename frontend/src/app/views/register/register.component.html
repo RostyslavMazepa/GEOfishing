@@ -1,99 +1,133 @@
+
 <div class="app flex-row align-items-center">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card mx-4">
-          <div class="card-body p-4">
-            <form [formGroup]="registerForm" (ngSubmit)="createAccount()">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
 
+          <div class="card mx-4">
+            <div class="card-body p-4">
+              <form [formGroup]="registerForm" (ngSubmit)="createAccount()">
+
+                <div class="row">
+                  <div class="col-9">
+                    <h1>Register</h1>
+                    <p class="text-muted">Create your account</p>
+                  </div>
+                  <div class="col-3">
+                    <img src="{{userImageURL}}" class="img-avatar" alt="" style="width: 50px"/>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('userName').invalid && processValidation"> Username is required.
+                  </small>
+                  <div class="input-group mb-3">
+                    <span class="input-group-addon"><i class="icon-user"></i></span>
+                    <input type="text" class="form-control" formControlName="userName" placeholder="Username">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('firstName').invalid && processValidation"> Username is required.
+                  </small>
+                  <div class="input-group mb-3">
+                    <span class="input-group-addon"><i class="icon-user"></i></span>
+                    <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('lastName').invalid && processValidation"> Username is required.
+                  </small>
+                  <div class="input-group mb-3">
+                    <span class="input-group-addon"><i class="icon-user"></i></span>
+                    <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('userEmail').invalid && processValidation"> Email is required.
+                  </small>
+                  <div class="input-group mb-3">
+                    <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" formControlName="userEmail" placeholder="Email">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('userPassword').invalid && processValidation"> Email is required.
+                  </small>
+                  <div class="input-group mb-3">
+                    <span class="input-group-addon"><i class="icon-lock"></i></span>
+                    <input type="password" class="form-control" formControlName="userPassword" placeholder="Password">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <small class="error alert-danger col-12"
+                         *ngIf="registerForm.get('userRepeatPassword').invalid && processValidation"> Email is required.
+                  </small>
+                  <div class="input-group mb-4">
+                    <span class="input-group-addon"><i class="icon-lock"></i></span>
+                    <input type="password" class="form-control" formControlName="userRepeatPassword"
+                           placeholder="Repeat password">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-block btn-success">Create Account</button>
+              </form>
+            </div>
+            <div class="card-footer p-4">
               <div class="row">
-                <div class="col-9">
-                  <h1>Register</h1>
-                  <p class="text-muted">Create your account</p>
+                <div class="col-6">
+                  <button class="btn btn-block btn-facebook" type="button" (click)="loginFacebook()">
+                    <span>Facebook</span>
+                  </button>
                 </div>
-                <div class="col-3">
-                  <img src="{{userImageURL}}" class="img-avatar" alt="" style="width: 50px"/>
+                <div class="col-6">
+                  <button class="btn btn-block btn-google-plus" type="button" (click)="loginGoogle()" id="googleBtn">
+                    <span>Google</span></button>
                 </div>
+
+
               </div>
 
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('userName').invalid && processValidation"> Username is required.
-                </small>
-                <div class="input-group mb-3">
-                  <span class="input-group-addon"><i class="icon-user"></i></span>
-                  <input type="text" class="form-control" formControlName="userName" placeholder="Username">
-                </div>
-              </div>
 
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('firstName').invalid && processValidation"> Username is required.
-                </small>
-                <div class="input-group mb-3">
-                  <span class="input-group-addon"><i class="icon-user"></i></span>
-                  <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
-                </div>
-              </div>
-
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('lastName').invalid && processValidation"> Username is required.
-                </small>
-                <div class="input-group mb-3">
-                  <span class="input-group-addon"><i class="icon-user"></i></span>
-                  <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
-                </div>
-              </div>
-
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('userEmail').invalid && processValidation"> Email is required.
-                </small>
-                <div class="input-group mb-3">
-                  <span class="input-group-addon">@</span>
-                  <input type="text" class="form-control" formControlName="userEmail" placeholder="Email">
-                </div>
-              </div>
-
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('userPassword').invalid && processValidation"> Email is required.
-                </small>
-                <div class="input-group mb-3">
-                  <span class="input-group-addon"><i class="icon-lock"></i></span>
-                  <input type="password" class="form-control" formControlName="userPassword" placeholder="Password">
-                </div>
-              </div>
-
-              <div class="row">
-                <small class="error alert-danger col-12"
-                       *ngIf="registerForm.get('userRepeatPassword').invalid && processValidation"> Email is required.
-                </small>
-                <div class="input-group mb-4">
-                  <span class="input-group-addon"><i class="icon-lock"></i></span>
-                  <input type="password" class="form-control" formControlName="userRepeatPassword"
-                         placeholder="Repeat password">
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-block btn-success">Create Account</button>
-            </form>
-          </div>
-          <div class="card-footer p-4">
-            <div class="row">
-              <div class="col-6">
-                <button class="btn btn-block btn-facebook" type="button" (click)="loginFacebook()"><span>Facebook</span>
-                </button>
-              </div>
-              <div class="col-6">
-                <button class="btn btn-block btn-google-plus" type="button" (click)="loginGoogle()" id="googleBtn">
-                  <span>Google</span></button>
-              </div>
             </div>
           </div>
+
+          <div *ngIf="statusCode; else processing">
+            <div *ngIf="statusCode === 201" [ngClass]="'success'">
+              <span class="badge badge-success"> Article added successfully.</span>
+            </div>
+            <div *ngIf="statusCode === 409" [ngClass]="'success'">
+              <span class="badge badge-success">Article already exists.</span>
+            </div>
+            <div *ngIf="statusCode === 200" [ngClass]="'success'">
+              <span class="badge badge-success">Article updated successfully.</span>
+            </div>
+            <div *ngIf="statusCode === 204" [ngClass]="'success'">
+              <span class="badge badge-success">Article deleted successfully.</span>
+            </div>
+            <div *ngIf="statusCode === 500" [ngClass]="'error'">
+              <span class="badge badge-danger">Internal Server Error.</span>
+            </div>
+          </div>
+          <ng-template #processing>
+            <img *ngIf="requestProcessing" src="../../../assets/img/loading.gif">
+          </ng-template>
+
         </div>
       </div>
     </div>
   </div>
-</div>
+
+
+
+
+

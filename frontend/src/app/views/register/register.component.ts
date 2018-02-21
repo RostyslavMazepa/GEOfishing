@@ -73,6 +73,7 @@ export class RegisterComponent{
           Cookie.set('authority', successCode['authorities'][0]['authority']);
           this.router.navigate(['/home']);
           console.log(successCode['authorities'][0]['authority'])
+          this.requestProcessing = false;
           // <a href="localhost:8080/registration/emailConfirm?token=46c73c59-5501-4999-913a-a42eee0543d8"
           // target="_blank" rel="noopener">localhost:8080/registration/emailConfirm?token=46c73c59-5501-4999-913a-a42eee0543d8</a>
         },
